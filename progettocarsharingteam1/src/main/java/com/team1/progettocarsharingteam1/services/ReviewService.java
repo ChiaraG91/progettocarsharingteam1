@@ -1,6 +1,7 @@
 package com.team1.progettocarsharingteam1.services;
 
 import com.team1.progettocarsharingteam1.entities.Review;
+import com.team1.progettocarsharingteam1.entities.enums.RatingEnum;
 import com.team1.progettocarsharingteam1.repositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,8 +37,8 @@ public class ReviewService {
         Optional<Review> reviewOpt = reviewRepository.findById(id);
         if (reviewOpt.isPresent()) {
             reviewOpt.get().setName(review.getName());
-            reviewOpt.get().setDescrizione(review.getDescrizione());
-            reviewOpt.get().setVoto(review.getVoto());
+            reviewOpt.get().setDescription(review.getDescription());
+            reviewOpt.get().setRating(review.getRating());
             reviewOpt.get().setRent(review.getRent());
             Review reviewUpdated = reviewRepository.save(reviewOpt.get());
             return Optional.of(reviewUpdated);
@@ -54,6 +55,25 @@ public class ReviewService {
         } else {
             return Optional.empty();
         }
+    }
+
+    /**
+     * find all review by rating enum
+     *
+     * @param ratingEnum the rating enum
+     * @return the list of review found
+     */
+    public List<Review> findByRating(RatingEnum ratingEnum) {
+        return reviewRepository.findByRating(ratingEnum);
+    }
+
+    /**
+     * find all review sorted by rating higher to lower
+     *
+     * @return the list of review found
+     */
+    public List<Review> sortedRating() {
+        return reviewRepository.sortByRating();
     }
 
 }

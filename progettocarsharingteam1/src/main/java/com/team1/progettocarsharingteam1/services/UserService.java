@@ -64,4 +64,24 @@ public class UserService {
             return Optional.of(optionalRents);
         }
     }
+
+    /**
+     * finds users by name
+     *
+     * @param name of the user
+     * @return a list of users with the given name
+     */
+    public List<User> findByName(String name) {
+        return userRepository.findByName(name);
+    }
+
+    /**
+     * finds users by surname
+     *
+     * @param surname surname of the user
+     * @return a list of users with the given surname
+     */
+    public List<User> findBySurname(String surname) {
+        return userRepository.findBySurname(surname);
+    }
 }

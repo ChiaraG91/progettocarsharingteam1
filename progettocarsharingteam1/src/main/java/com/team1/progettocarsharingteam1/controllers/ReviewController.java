@@ -1,6 +1,7 @@
 package com.team1.progettocarsharingteam1.controllers;
 
 import com.team1.progettocarsharingteam1.entities.Review;
+import com.team1.progettocarsharingteam1.entities.enums.RatingEnum;
 import com.team1.progettocarsharingteam1.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -58,4 +59,34 @@ public class ReviewController {
         }
     }
 
+    /**
+     * Find all reviews by rating enum
+     *
+     * @param ratingEnum the rating enum
+     * @return the list of review found
+     */
+    @GetMapping("/findByRating")
+    public ResponseEntity<List<Review>> findByRating(@RequestParam RatingEnum ratingEnum) {
+        List<Review> reviews = reviewService.findByRating(ratingEnum);
+        if (reviews.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(reviews);
+        }
+    }
+
+    /**
+     * Find all reviews sorted by rating higher to lower
+     *
+     * @return the list of review found
+     */
+    @GetMapping("/sorted")
+    public ResponseEntity<List<Review>> sortByRating() {
+        List<Review> reviews = reviewService.sortedRating();
+        if (reviews.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(reviews);
+        }
+    }
 }

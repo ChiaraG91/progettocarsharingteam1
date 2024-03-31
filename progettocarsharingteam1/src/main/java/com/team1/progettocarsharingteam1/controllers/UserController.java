@@ -58,13 +58,45 @@ public class UserController {
         }
     }
 
-    @GetMapping("rents/{id}")
+    @GetMapping("/rents/{id}")
     ResponseEntity<List<Rent>> rentById(@PathVariable Long id) {
         Optional<List<Rent>> optionalRents = userService.rentByid(id);
         if (optionalRents.isPresent()) {
             return ResponseEntity.ok(optionalRents.get());
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * find a list of users by name
+     *
+     * @param name of the user
+     * @return a list of users with the given name
+     */
+    @GetMapping("/find/name")
+    ResponseEntity<List<User>> findByName(@RequestParam String name) {
+        List<User> list = userService.findByName(name);
+        if (list.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(list);
+        }
+    }
+
+    /**
+     * find a list of users by surname given
+     *
+     * @param surname of the user
+     * @return a list of users with the given surname
+     */
+    @GetMapping("/find/surname")
+    ResponseEntity<List<User>> findBySurname(@RequestParam String surname) {
+        List<User> list = userService.findBySurname(surname);
+        if (list.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(list);
         }
     }
 }

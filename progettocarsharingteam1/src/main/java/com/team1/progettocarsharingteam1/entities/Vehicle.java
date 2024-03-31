@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 public class Vehicle {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -25,14 +25,14 @@ public class Vehicle {
     private boolean isAvailable;
 
     @Enumerated
-    private TypeVehicleEnum TypeVehicle;
+    private TypeVehicleEnum typeVehicle;
     @OneToMany(mappedBy = "vehicle")
     @JsonIgnore
     private List<Rent> rentals;
 
     public Vehicle(long id, TypeVehicleEnum typeVehicle, String brand, String model, String details, boolean isAvailable, List<Rent> rentals) {
         this.id = id;
-        this.TypeVehicle = typeVehicle;
+        this.typeVehicle = typeVehicle;
         this.brand = brand;
         this.model = model;
         this.details = details;
@@ -92,10 +92,10 @@ public class Vehicle {
     }
 
     public TypeVehicleEnum getTypeVehicle() {
-        return TypeVehicle;
+        return typeVehicle;
     }
 
     public void setTypeVehicle(TypeVehicleEnum typeVehicle) {
-        TypeVehicle = typeVehicle;
+        typeVehicle = typeVehicle;
     }
 }

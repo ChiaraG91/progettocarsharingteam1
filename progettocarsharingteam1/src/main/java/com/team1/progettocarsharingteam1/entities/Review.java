@@ -1,5 +1,6 @@
 package com.team1.progettocarsharingteam1.entities;
 
+import com.team1.progettocarsharingteam1.entities.enums.RatingEnum;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,20 +15,21 @@ public class Review {
     private String name;
 
     @Column(nullable = false)
-    private String descrizione;
+    private String description;
 
+    @Enumerated
     @Column(nullable = false)
-    private Integer voto;
+    private RatingEnum rating;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rent_id", nullable = false)
     private Rent rent;
 
-    public Review(Long id, String name, String descrizione, Integer voto, Rent rent) {
+    public Review(Long id, String name, String description, RatingEnum rating, Rent rent) {
         this.id = id;
         this.name = name;
-        this.descrizione = descrizione;
-        this.voto = voto;
+        this.description = description;
+        this.rating = rating;
         this.rent = rent;
     }
 
@@ -50,20 +52,20 @@ public class Review {
         this.name = name;
     }
 
-    public String getDescrizione() {
-        return descrizione;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescrizione(String descrizione) {
-        this.descrizione = descrizione;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Integer getVoto() {
-        return voto;
+    public RatingEnum getRating() {
+        return rating;
     }
 
-    public void setVoto(Integer voto) {
-        this.voto = voto;
+    public void setRating(RatingEnum rating) {
+        this.rating = rating;
     }
 
     public Rent getRent() {
