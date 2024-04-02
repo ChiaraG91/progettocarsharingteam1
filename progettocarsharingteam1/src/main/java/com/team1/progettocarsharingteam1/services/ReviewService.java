@@ -20,12 +20,18 @@ public class ReviewService {
         return reviewNuova;
     }
 
-    public List<Review> findAll() {
-        return reviewRepository.findAll();
+    public List<Review> findAll(boolean isActive) {
+
+        if(isActive) {
+            List<Review> reviewList = reviewRepository.findAllByIsActiveTrue();
+            return reviewList;
+        }
+        List<Review> reviewList = reviewRepository.findAll();
+        return reviewList;
     }
 
     public Optional<Review> findById(Long id) {
-        Optional<Review> reviewOpt = reviewRepository.findById(id);
+        Optional<Review> reviewOpt = reviewRepository.findByIdAndIsActiveTrue(id);
         if (reviewOpt.isPresent()) {
             return reviewOpt;
         } else {
@@ -34,7 +40,7 @@ public class ReviewService {
     }
 
     public Optional<Review> edit(Long id, Review review) {
-        Optional<Review> reviewOpt = reviewRepository.findById(id);
+        Optional<Review> reviewOpt = reviewRepository.findByIdAndIsActiveTrue(id);
         if (reviewOpt.isPresent()) {
             reviewOpt.get().setName(review.getName());
             reviewOpt.get().setDescription(review.getDescription());
@@ -64,7 +70,7 @@ public class ReviewService {
      * @return the list of review found
      */
     public List<Review> findByRating(RatingEnum ratingEnum) {
-        return reviewRepository.findByRating(ratingEnum);
+        return reviewRepository.findByRatingAndIsActiveTrue(ratingEnum);
     }
 
     /**
@@ -74,6 +80,19 @@ public class ReviewService {
      */
     public List<Review> sortedRating() {
         return reviewRepository.sortByRating();
+    }
+
+    public Optional<Review> editActive(Long id, boolean isActive) {
+        Optional<Review> reviewOpt = reviewRepository.findById(id);
+
+        if (reviewOpt.isPresent()){
+            reviewOpt.get().setActive(isActive);
+            reviewRepository.save(reviewOpt.get());
+
+        } else {
+            return Optional.empty();
+        }
+        return reviewOpt;
     }
 
 }

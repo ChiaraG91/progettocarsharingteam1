@@ -96,6 +96,6 @@ public class Vehicle {
     }
 
     public void setTypeVehicle(TypeVehicleEnum typeVehicle) {
-        typeVehicle = typeVehicle;
+        this.typeVehicle = typeVehicle;
     }
 }

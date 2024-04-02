@@ -24,8 +24,8 @@ public class RentController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Rent>> findAll() {
-        List<Rent> allRentals = rentService.findAll();
+    public ResponseEntity<List<Rent>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
+        List<Rent> allRentals = rentService.findAll(isActive);
         return ResponseEntity.ok().body(allRentals);
     }
 
@@ -82,4 +82,15 @@ public class RentController {
         double rentalPrice = rentService.RentalPriceCalculator(chargeEnum,rentalTime);
         return ResponseEntity.ok(rentalPrice);
     }
+
+    @PutMapping("/edit-active/{id}")
+    public ResponseEntity<Rent> editActive(@PathVariable Long id, @RequestParam boolean isActive) {
+        Optional<Rent> rentOpt = rentService.editActive(id, isActive);
+
+        if (rentOpt.isPresent()) {
+            return ResponseEntity.ok().body(rentOpt.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }

@@ -33,6 +33,9 @@ public class Rent {
     @JoinColumn(name = "vehicle_id", nullable = false)
     private Vehicle vehicle;
 
+    @Column(nullable = false)
+    private boolean isActive = true;
+
     public Rent(Long id, LocalDateTime startTme, LocalDateTime endTime, Double price, ChargeEnum chargeEnum, User user, Vehicle vehicle) {
         this.id = id;
         this.startTme = startTme;
@@ -100,5 +103,13 @@ public class Rent {
 
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

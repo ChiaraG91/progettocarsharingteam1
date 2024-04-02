@@ -1,5 +1,6 @@
 package com.team1.progettocarsharingteam1.controllers;
 
+import com.team1.progettocarsharingteam1.entities.Rent;
 import com.team1.progettocarsharingteam1.entities.Review;
 import com.team1.progettocarsharingteam1.entities.enums.RatingEnum;
 import com.team1.progettocarsharingteam1.services.ReviewService;
@@ -24,8 +25,8 @@ public class ReviewController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Review>> findAll() {
-        List<Review> reviews = reviewService.findAll();
+    public ResponseEntity<List<Review>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
+        List<Review> reviews = reviewService.findAll(isActive);
         return ResponseEntity.ok().body(reviews);
     }
 
@@ -89,4 +90,15 @@ public class ReviewController {
             return ResponseEntity.ok(reviews);
         }
     }
+
+    @PutMapping("/edit-active/{id}")
+    public ResponseEntity<Review> editActive(@PathVariable Long id, @RequestParam boolean isActive) {
+        Optional<Review> reviewOpt = reviewService.editActive(id, isActive);
+
+        if (reviewOpt.isPresent()) {
+            return ResponseEntity.ok().body(reviewOpt.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }

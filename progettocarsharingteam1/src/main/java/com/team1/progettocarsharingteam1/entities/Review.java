@@ -25,6 +25,9 @@ public class Review {
     @JoinColumn(name = "rent_id", nullable = false)
     private Rent rent;
 
+    @Column(nullable = false)
+    private boolean isActive = true;
+
     public Review(Long id, String name, String description, RatingEnum rating, Rent rent) {
         this.id = id;
         this.name = name;
@@ -74,5 +77,13 @@ public class Review {
 
     public void setRent(Rent rent) {
         this.rent = rent;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

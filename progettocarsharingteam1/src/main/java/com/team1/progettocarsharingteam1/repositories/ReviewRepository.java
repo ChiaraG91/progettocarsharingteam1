@@ -7,12 +7,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-    List<Review> findByRating(RatingEnum ratingEnum);
+    List<Review> findByRatingAndIsActiveTrue(RatingEnum ratingEnum);
 
-    @Query(value = "SELECT * FROM Review ORDER BY rating DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM Reviews WHERE is_active = true ORDER BY rating DESC", nativeQuery = true)
     List<Review> sortByRating();
+
+    Optional<Review> findByIdAndIsActiveTrue(Long id);
+
+    List<Review> findAllByIsActiveTrue();
 }
