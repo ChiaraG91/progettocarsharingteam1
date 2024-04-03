@@ -1,10 +1,7 @@
 package com.team1.progettocarsharingteam1.entities;
 
 import com.team1.progettocarsharingteam1.entities.enums.ChargeEnum;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class PaymentRequest {
@@ -14,6 +11,7 @@ public class PaymentRequest {
     private Long id;
     private String token; // Token generato dal frontend
     private ChargeEnum chargeEnum; //Tariffa oraria
+    @Column(nullable = false)
     private double rentalTime; // Durata in ore del servizio
     private String currency; // Valuta del pagamento
     private String description; // Descrizione del pagamento
@@ -47,8 +45,8 @@ public class PaymentRequest {
         this.token = token;
     }
 
-    public double getChargeEnum() {
-        return chargeEnum.ordinal();
+    public ChargeEnum getChargeEnum() {
+        return chargeEnum;
     }
 
     public void setChargeEnum(ChargeEnum chargeEnum) {

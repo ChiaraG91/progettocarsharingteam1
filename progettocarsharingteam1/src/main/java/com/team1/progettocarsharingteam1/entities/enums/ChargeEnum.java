@@ -2,15 +2,19 @@ package com.team1.progettocarsharingteam1.entities.enums;
 
 public enum ChargeEnum {
 
-    HOURLY ("hourly charge",6.0);
+    HOURLY (6.0);
 
-    private final String chargeEnum;
+    private double chargeEnum;
 
-    ChargeEnum(String chargeEnum, double charge) {
+    ChargeEnum(double charge) {
         this.chargeEnum = chargeEnum;
     }
 
-    public String getChargeEnum() {
+    public double getChargeEnum() {
         return chargeEnum;
+    }
+
+    public void setChargeEnum(double chargeEnum) {
+        this.chargeEnum = chargeEnum;
     }
 }

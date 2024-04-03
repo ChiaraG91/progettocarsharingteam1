@@ -13,5 +13,5 @@ spring:
     serialization:
       fail-on-empty-beans: false
 ---
-stripeApiKey: "pk_test_51P1Q8jC8B4hBn89lGmdnYJ0ommVTMyrCfFQo2QDUfE1pNMYpwQMZVDi2bcHEc1vPZ8Ota9yHe605dmymG8PpEwYy003bXCnVEo"
+stripeApiKey: "sk_test_51P1Q8jC8B4hBn89lKspiMAgym34ydc6jIyaScyY4D0PhOTI8t8g8BLyWFOrs1UJI1Xj6rtRomBSDYGGMWzkRsXAp00FkXWul8P"
 

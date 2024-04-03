@@ -24,6 +24,7 @@ public class StripePaymentProcessor {
         Stripe.apiKey = stripeApiKey;
     }
 
+
     public void chargePayment(Long id, String token, double amount, String currency, String description) throws StripeException {
         Map<String, Object> params = new HashMap<>();
         params.put("id",id);
