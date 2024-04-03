@@ -4,9 +4,9 @@ public enum ChargeEnum {
 
     HOURLY (6.0);
 
-    private double chargeEnum;
+    private Double chargeEnum;
 
-    ChargeEnum(double charge) {
+    ChargeEnum(Double charge) {
         this.chargeEnum = chargeEnum;
     }
 
@@ -14,7 +14,7 @@ public enum ChargeEnum {
         return chargeEnum;
     }
 
-    public void setChargeEnum(double chargeEnum) {
+    public void setChargeEnum(Double chargeEnum) {
         this.chargeEnum = chargeEnum;
     }
 }
