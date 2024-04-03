@@ -1,5 +1,6 @@
 package com.team1.progettocarsharingteam1.controllers;
 
+import com.team1.progettocarsharingteam1.entities.User;
 import com.team1.progettocarsharingteam1.entities.Vehicle;
 import com.team1.progettocarsharingteam1.entities.enums.TypeVehicleEnum;
 import com.team1.progettocarsharingteam1.services.VehicleService;
@@ -23,12 +24,12 @@ public class VehicleController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Vehicle>> findAll() {
-        List<Vehicle> vehicleOpt = vehicleService.findAll();
-        if (vehicleOpt.isEmpty()) {
+    public ResponseEntity<List<Vehicle>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
+        List<Vehicle> vehicleList = vehicleService.findAll(isActive);
+        if (vehicleList.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(vehicleService.findAll());
+            return ResponseEntity.ok(vehicleList);
         }
     }
 
@@ -124,4 +125,22 @@ public class VehicleController {
             return ResponseEntity.ok(vehicleList);
         }
     }
+
+    /**
+     * Endpoint for updating the isActive field of a vehicle
+     *
+     * @param id the identifier of the vehicle to be updated
+     * @param isActive the boolean value to set for the isActive field
+     * @return ResponseEntity containing the updated vehicle, or a 404 Not Found response if the vehicle is not found.
+     */
+    @PutMapping("/edit-active/{id}")
+    public ResponseEntity<Vehicle> editActive(@PathVariable Long id, @RequestParam boolean isActive) {
+        Optional<Vehicle> vehicleOpt = vehicleService.editActive(id, isActive);
+
+        if (vehicleOpt.isPresent()) {
+            return ResponseEntity.ok().body(vehicleOpt.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }

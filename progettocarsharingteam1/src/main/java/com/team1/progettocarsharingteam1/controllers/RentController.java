@@ -83,6 +83,13 @@ public class RentController {
         return ResponseEntity.ok(rentalPrice);
     }
 
+    /**
+     * Endpoint for updating the isActive field of a rent
+     *
+     * @param id the identifier of the rent to be updated
+     * @param isActive the boolean value to set for the isActive field
+     * @return ResponseEntity containing the updated rent, or a 404 Not Found response if the rent is not found.
+     */
     @PutMapping("/edit-active/{id}")
     public ResponseEntity<Rent> editActive(@PathVariable Long id, @RequestParam boolean isActive) {
         Optional<Rent> rentOpt = rentService.editActive(id, isActive);

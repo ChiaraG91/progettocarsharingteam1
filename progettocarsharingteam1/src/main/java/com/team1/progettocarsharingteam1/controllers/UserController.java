@@ -1,6 +1,7 @@
 package com.team1.progettocarsharingteam1.controllers;
 
 import com.team1.progettocarsharingteam1.entities.Rent;
+import com.team1.progettocarsharingteam1.entities.Review;
 import com.team1.progettocarsharingteam1.entities.User;
 import com.team1.progettocarsharingteam1.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<User>> findAll() {
-        List<User> userList = userService.findAll();
+    public ResponseEntity<List<User>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
+        List<User> userList = userService.findAll(isActive);
         return ResponseEntity.ok().body(userList);
     }
 
@@ -99,4 +100,22 @@ public class UserController {
             return ResponseEntity.ok(list);
         }
     }
+
+    /**
+     * Endpoint for updating the isActive field of a user
+     *
+     * @param id the identifier of the user to be updated
+     * @param isActive the boolean value to set for the isActive field
+     * @return ResponseEntity containing the updated user, or a 404 Not Found response if the user is not found.
+     */
+    @PutMapping("/edit-active/{id}")
+    public ResponseEntity<User> editActive(@PathVariable Long id, @RequestParam boolean isActive) {
+        Optional<User> userOpt = userService.editActive(id, isActive);
+
+        if (userOpt.isPresent()) {
+            return ResponseEntity.ok().body(userOpt.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }
