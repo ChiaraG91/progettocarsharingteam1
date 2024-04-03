@@ -20,7 +20,7 @@ public class PaymentRequest {
     public PaymentRequest() {
     }
 
-    public PaymentRequest(Long id, String token, ChargeEnum chargeEnum, double rentalTime, String currency, String description) {
+    public PaymentRequest(Long id, String token, ChargeEnum chargeEnum, Double rentalTime, String currency, String description) {
         this.id = id;
         this.token = token;
         this.chargeEnum = chargeEnum;
@@ -53,7 +53,7 @@ public class PaymentRequest {
         this.chargeEnum = chargeEnum;
     }
 
-    public double getRentalTime() {
+    public Double getRentalTime() {
         return rentalTime;
     }
 

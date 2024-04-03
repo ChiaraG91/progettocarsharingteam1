@@ -10,12 +10,12 @@ public class PaymentService {
 
     @Autowired
     private StripePaymentProcessor stripePaymentProcessor;
-    public double calculateAmount(ChargeEnum chargeEnum,  double rentalTime) {
+    public double calculateAmount(ChargeEnum chargeEnum,  Double rentalTime) {
         return chargeEnum.getChargeEnum() * rentalTime;
     }
 
     public void processPayment(PaymentRequest paymentRequest) throws StripeException {
-        double amount = calculateAmount(paymentRequest.getChargeEnum(), paymentRequest.getRentalTime());
+        Double amount = calculateAmount(paymentRequest.getChargeEnum(), paymentRequest.getRentalTime());
         stripePaymentProcessor.chargePayment(paymentRequest.getId(),paymentRequest.getToken(), amount, paymentRequest.getCurrency(), paymentRequest.getDescription());
     }
 

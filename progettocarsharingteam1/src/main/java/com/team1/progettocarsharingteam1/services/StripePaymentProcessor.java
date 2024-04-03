@@ -25,7 +25,7 @@ public class StripePaymentProcessor {
     }
 
 
-    public void chargePayment(Long id, String token, double amount, String currency, String description) throws StripeException {
+    public void chargePayment(Long id, String token, Double amount, String currency, String description) throws StripeException {
         Map<String, Object> params = new HashMap<>();
         params.put("id",id);
         params.put("amount", (int) (amount * 100)); // Converti l'importo in centesimi
@@ -33,7 +33,7 @@ public class StripePaymentProcessor {
         params.put("description", description);
         params.put("source", token); // Token generato dal frontend
 
-        Charge charge = Charge.create(params);
+        Charge.create(params);
 
     }
 }
