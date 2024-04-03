@@ -26,6 +26,10 @@ public class Vehicle {
 
     @Enumerated
     private TypeVehicleEnum typeVehicle;
+
+    @Column(nullable = false)
+    private boolean isActive = true;
+
     @OneToMany(mappedBy = "vehicle")
     @JsonIgnore
     private List<Rent> rentals;
@@ -97,5 +101,13 @@ public class Vehicle {
 
     public void setTypeVehicle(TypeVehicleEnum typeVehicle) {
         this.typeVehicle = typeVehicle;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

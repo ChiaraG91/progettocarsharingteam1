@@ -82,17 +82,23 @@ public class ReviewService {
         return reviewRepository.sortByRating();
     }
 
+    /**
+     * Sets the isActive field of a review to true or false, effectively performing a soft delete
+     *
+     * @param id the identifier of the review to be modified.
+     * @param isActive the boolean value to set for the isActive field
+     * @return an Optional containing the updated review if it exists, or an empty Optional if the review is not found
+     */
     public Optional<Review> editActive(Long id, boolean isActive) {
         Optional<Review> reviewOpt = reviewRepository.findById(id);
 
         if (reviewOpt.isPresent()){
             reviewOpt.get().setActive(isActive);
-            reviewRepository.save(reviewOpt.get());
 
-        } else {
-            return Optional.empty();
+            Review reviewUpdated = reviewRepository.save(reviewOpt.get());
+            return Optional.of(reviewUpdated);
         }
-        return reviewOpt;
+        return Optional.empty();
     }
 
 }

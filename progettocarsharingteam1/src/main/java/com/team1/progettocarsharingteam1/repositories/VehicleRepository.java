@@ -7,17 +7,21 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
-    List<Vehicle> findByBrand(String brand);
+    List<Vehicle> findByBrandAndIsActiveTrue(String brand);
 
-    List<Vehicle> findByModel(String model);
+    List<Vehicle> findByModelAndIsActiveTrue(String model);
 
-    @Query(value = "SELECT * FROM Vehicle WHERE is_available = true", nativeQuery = true)
+    @Query(value = "SELECT * FROM Vehicle WHERE is_available = true and is_active = true", nativeQuery = true)
     List<Vehicle> findAllAvailable();
 
-    List<Vehicle> findByTypeVehicle(TypeVehicleEnum typeVehicleEnum);
+    List<Vehicle> findByTypeVehicleAndIsActiveTrue(TypeVehicleEnum typeVehicleEnum);
 
+    Optional<Vehicle> findByIdAndIsActiveTrue(Long id);
+
+    List<Vehicle> findAllByIsActiveTrue();
 }

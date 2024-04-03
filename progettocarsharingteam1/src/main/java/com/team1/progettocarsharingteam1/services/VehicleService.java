@@ -1,5 +1,6 @@
 package com.team1.progettocarsharingteam1.services;
 
+import com.team1.progettocarsharingteam1.entities.User;
 import com.team1.progettocarsharingteam1.entities.Vehicle;
 import com.team1.progettocarsharingteam1.entities.enums.TypeVehicleEnum;
 import com.team1.progettocarsharingteam1.repositories.VehicleRepository;
@@ -19,16 +20,22 @@ public class VehicleService {
         return vehicleRepository.save(vehicle);
     }
 
-    public List<Vehicle> findAll() {
-        return vehicleRepository.findAll();
+    public List<Vehicle> findAll(boolean isActive) {
+
+        if(isActive) {
+            List<Vehicle> vehicleList = vehicleRepository.findAllByIsActiveTrue();
+            return vehicleList;
+        }
+        List<Vehicle> vehicleList = vehicleRepository.findAll();
+        return vehicleList;
     }
 
     public Optional<Vehicle> findById(Long id) {
-        return vehicleRepository.findById(id);
+        return vehicleRepository.findByIdAndIsActiveTrue(id);
     }
 
     public Optional<Vehicle> edit(Long id, Vehicle vehicle) {
-        Optional<Vehicle> vehicleOpt = vehicleRepository.findById(id);
+        Optional<Vehicle> vehicleOpt = vehicleRepository.findByIdAndIsActiveTrue(id);
         if (vehicleOpt.isPresent()) {
             vehicleOpt.get().setBrand(vehicle.getBrand());
             vehicleOpt.get().setModel(vehicle.getModel());
@@ -59,7 +66,7 @@ public class VehicleService {
      * @return the list of vehicles with the same brand
      */
     public List<Vehicle> findByBrand(String brand) {
-        return vehicleRepository.findByBrand(brand);
+        return vehicleRepository.findByBrandAndIsActiveTrue(brand);
     }
 
     /**
@@ -69,7 +76,7 @@ public class VehicleService {
      * @return the list of vehicles with the same model
      */
     public List<Vehicle> findByModel(String model) {
-        return vehicleRepository.findByModel(model);
+        return vehicleRepository.findByModelAndIsActiveTrue(model);
     }
 
     /**
@@ -88,6 +95,26 @@ public class VehicleService {
      * @return the list of vehicles with the same type
      */
     public List<Vehicle> findByTypeVehicle(TypeVehicleEnum typeVehicleEnum) {
-        return vehicleRepository.findByTypeVehicle(typeVehicleEnum);
+        return vehicleRepository.findByTypeVehicleAndIsActiveTrue(typeVehicleEnum);
     }
+
+    /**
+     * Sets the isActive field of a vehicle to true or false, effectively performing a soft delete
+     *
+     * @param id the identifier of the vehicle to be modified.
+     * @param isActive the boolean value to set for the isActive field
+     * @return an Optional containing the updated vehicle if it exists, or an empty Optional if the vehicle is not found
+     */
+    public Optional<Vehicle> editActive(Long id, boolean isActive) {
+        Optional<Vehicle> vehicleOpt = vehicleRepository.findById(id);
+
+        if (vehicleOpt.isPresent()){
+            vehicleOpt.get().setActive(isActive);
+
+            Vehicle vehicleUpdated = vehicleRepository.save(vehicleOpt.get());
+            return Optional.of(vehicleUpdated);
+        }
+        return Optional.empty();
+    }
+
 }

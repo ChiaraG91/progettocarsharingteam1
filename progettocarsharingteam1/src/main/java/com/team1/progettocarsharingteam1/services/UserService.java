@@ -19,16 +19,22 @@ public class UserService {
     }
 
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<User> findAll(boolean isActive) {
+
+        if (isActive) {
+            List<User> userList = userRepository.findAllByIsActiveTrue();
+            return userList;
+        }
+        List<User> userList = userRepository.findAll();
+        return userList;
     }
 
     public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
+        return userRepository.findByIdAndIsActiveTrue(id);
     }
 
     public Optional<User> edit(Long id, User user) {
-        Optional<User> optionalUser = userRepository.findById(id);
+        Optional<User> optionalUser = userRepository.findByIdAndIsActiveTrue(id);
         if (optionalUser.isPresent()) {
             optionalUser.get().setName(user.getName());
             optionalUser.get().setAddress(user.getAddress());
@@ -72,7 +78,7 @@ public class UserService {
      * @return a list of users with the given name
      */
     public List<User> findByName(String name) {
-        return userRepository.findByName(name);
+        return userRepository.findByNameAndIsActiveTrue(name);
     }
 
     /**
@@ -82,6 +88,26 @@ public class UserService {
      * @return a list of users with the given surname
      */
     public List<User> findBySurname(String surname) {
-        return userRepository.findBySurname(surname);
+        return userRepository.findBySurnameAndIsActiveTrue(surname);
     }
+
+    /**
+     * Sets the isActive field of a user to true or false, effectively performing a soft delete
+     *
+     * @param id the identifier of the user to be modified.
+     * @param isActive the boolean value to set for the isActive field
+     * @return an Optional containing the updated user if it exists, or an empty Optional if the user is not found
+     */
+    public Optional<User> editActive(Long id, boolean isActive) {
+        Optional<User> userOpt = userRepository.findById(id);
+
+        if (userOpt.isPresent()){
+            userOpt.get().setActive(isActive);
+
+            User userUpdated = userRepository.save(userOpt.get());
+            return Optional.of(userUpdated);
+        }
+        return Optional.empty();
+    }
+
 }

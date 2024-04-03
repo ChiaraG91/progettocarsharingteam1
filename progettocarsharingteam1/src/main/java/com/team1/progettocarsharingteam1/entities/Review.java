@@ -21,12 +21,12 @@ public class Review {
     @Column(nullable = false)
     private RatingEnum rating;
 
+    @Column(nullable = false)
+    private boolean isActive = true;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rent_id", nullable = false)
     private Rent rent;
-
-    @Column(nullable = false)
-    private boolean isActive = true;
 
     public Review(Long id, String name, String description, RatingEnum rating, Rent rent) {
         this.id = id;

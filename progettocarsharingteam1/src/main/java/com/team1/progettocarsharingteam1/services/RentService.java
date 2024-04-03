@@ -75,8 +75,8 @@ public class RentService {
 
     public Rent startRent(Long userId, Long vehicleId) {
         Rent newRent = new Rent();
-        Optional<User> userOpt = userRepository.findById(userId);
-        Optional<Vehicle> vehicleOpt = vehicleRepository.findById(vehicleId);
+        Optional<User> userOpt = userRepository.findByIdAndIsActiveTrue(userId);
+        Optional<Vehicle> vehicleOpt = vehicleRepository.findByIdAndIsActiveTrue(vehicleId);
 
         if(userOpt.isPresent() && vehicleOpt.isPresent()) {
             newRent.setStartTme(LocalDateTime.now());
@@ -95,7 +95,7 @@ public class RentService {
 
     public Optional<Rent> endRent(Long rentId, Long vehicleId) {
         Optional<Rent> rentOpt = rentRepository.findByIdAndIsActiveTrue(rentId);
-        Optional<Vehicle> vehicleOpt = vehicleRepository.findById(vehicleId);
+        Optional<Vehicle> vehicleOpt = vehicleRepository.findByIdAndIsActiveTrue(vehicleId);
 
         if (rentOpt.isPresent() && vehicleOpt.isPresent()) {
             rentOpt.get().setEndTime(LocalDateTime.now());
@@ -110,18 +110,23 @@ public class RentService {
         }
     }
 
-
+    /**
+     * Sets the isActive field of a rent to true or false, effectively performing a soft delete
+     *
+     * @param id the identifier of the rent to be modified.
+     * @param isActive the boolean value to set for the isActive field
+     * @return an Optional containing the updated rent if it exists, or an empty Optional if the rent is not found
+     */
     public Optional<Rent> editActive(Long id, boolean isActive) {
-        Optional<Rent> rentToUpdate = rentRepository.findById(id);
+        Optional<Rent> rentOpt = rentRepository.findById(id);
 
-        if (rentToUpdate.isPresent()){
-            rentToUpdate.get().setActive(isActive);
-            rentRepository.save(rentToUpdate.get());
+        if (rentOpt.isPresent()){
+            rentOpt.get().setActive(isActive);
 
-        } else {
-            return Optional.empty();
+            Rent rentUpdated = rentRepository.save(rentOpt.get());
+            return Optional.of(rentUpdated);
         }
-        return rentToUpdate;
+        return Optional.empty();
     }
 
 }

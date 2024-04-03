@@ -8,13 +8,18 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Query("SELECT u.rentals FROM User u WHERE u.id = :UserId")
+    @Query("SELECT u.rentals FROM User u WHERE u.id = :UserId and u.isActive = true")
     List<Rent> findAllOrdiniByUserId(@Param("UserId") Long UserId);
 
-    List<User> findByName(String name);
+    List<User> findByNameAndIsActiveTrue(String name);
 
-    List<User> findBySurname(String surname);
+    List<User> findBySurnameAndIsActiveTrue(String surname);
+
+    Optional<User> findByIdAndIsActiveTrue(Long id);
+
+    List<User> findAllByIsActiveTrue();
 }

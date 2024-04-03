@@ -91,6 +91,13 @@ public class ReviewController {
         }
     }
 
+    /**
+     * Endpoint for updating the isActive field of a review
+     *
+     * @param id the identifier of the review to be updated
+     * @param isActive the boolean value to set for the isActive field
+     * @return ResponseEntity containing the updated review, or a 404 Not Found response if the review is not found.
+     */
     @PutMapping("/edit-active/{id}")
     public ResponseEntity<Review> editActive(@PathVariable Long id, @RequestParam boolean isActive) {
         Optional<Review> reviewOpt = reviewService.editActive(id, isActive);

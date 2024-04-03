@@ -22,6 +22,9 @@ public class Rent {
     @Column(nullable = false)
     private Double price;
 
+    @Column(nullable = false)
+    private boolean isActive = true;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -29,9 +32,6 @@ public class Rent {
     @ManyToOne
     @JoinColumn(name = "vehicle_id", nullable = false)
     private Vehicle vehicle;
-
-    @Column(nullable = false)
-    private boolean isActive = true;
 
     public Rent(Long id, LocalDateTime startTme, LocalDateTime endTime, Double price, User user, Vehicle vehicle) {
         this.id = id;

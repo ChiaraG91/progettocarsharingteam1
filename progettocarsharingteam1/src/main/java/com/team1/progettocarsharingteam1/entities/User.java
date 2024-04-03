@@ -39,6 +39,10 @@ public class User {
 
     @Column(nullable = false)
     private boolean isVerified;
+
+    @Column(nullable = false)
+    private boolean isActive = true;
+
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Rent> rentals;
@@ -142,5 +146,13 @@ public class User {
 
     public List<Rent> getRentals() {
         return rentals;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }
