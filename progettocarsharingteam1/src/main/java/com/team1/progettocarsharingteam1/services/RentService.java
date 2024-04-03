@@ -111,16 +111,6 @@ public class RentService {
     }
 
 
-    public double RentalPriceCalculator(ChargeEnum chargeEnum, Integer rentalTime) {
-        double hourlyPrice = switch (chargeEnum) {
-            case SHORT -> 6.0;
-            case MEDIUM -> 5.5;
-            case LONG -> 5.0;
-        };
-
-        return hourlyPrice * rentalTime;
-    }
-
     public Optional<Rent> editActive(Long id, boolean isActive) {
         Optional<Rent> rentToUpdate = rentRepository.findById(id);
 

@@ -12,3 +12,6 @@ spring:
   jackson:
     serialization:
       fail-on-empty-beans: false
+---
+stripeApiKey: "pk_test_51P1Q8jC8B4hBn89lGmdnYJ0ommVTMyrCfFQo2QDUfE1pNMYpwQMZVDi2bcHEc1vPZ8Ota9yHe605dmymG8PpEwYy003bXCnVEo"
+

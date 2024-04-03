@@ -74,15 +74,6 @@ public class RentController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/calculate")
-    public ResponseEntity<Double> RentalPrice(
-            @RequestParam("charge") ChargeEnum chargeEnum,
-            @RequestParam("rentalTime") Integer rentalTime) {
-
-        double rentalPrice = rentService.RentalPriceCalculator(chargeEnum,rentalTime);
-        return ResponseEntity.ok(rentalPrice);
-    }
-
     @PutMapping("/edit-active/{id}")
     public ResponseEntity<Rent> editActive(@PathVariable Long id, @RequestParam boolean isActive) {
         Optional<Rent> rentOpt = rentService.editActive(id, isActive);
