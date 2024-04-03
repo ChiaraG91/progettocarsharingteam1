@@ -12,7 +12,7 @@ public class PaymentRequest {
     private String token; // Token generato dal frontend
     private ChargeEnum chargeEnum; //Tariffa oraria
     @Column(nullable = false)
-    private double rentalTime; // Durata in ore del servizio
+    private Double rentalTime; // Durata in ore del servizio
     private String currency; // Valuta del pagamento
     private String description; // Descrizione del pagamento
 
