@@ -1,5 +1,6 @@
 package com.team1.progettocarsharingteam1.controllers;
 
+import com.team1.progettocarsharingteam1.dto.VehicleDTO;
 import com.team1.progettocarsharingteam1.entities.User;
 import com.team1.progettocarsharingteam1.entities.Vehicle;
 import com.team1.progettocarsharingteam1.entities.enums.TypeVehicleEnum;
@@ -19,13 +20,13 @@ public class VehicleController {
     VehicleService vehicleService;
 
     @PostMapping("/create")
-    public ResponseEntity<Vehicle> create(@RequestBody Vehicle vehicle) {
-        return ResponseEntity.ok(vehicleService.create(vehicle));
+    public ResponseEntity<VehicleDTO> create(@RequestBody VehicleDTO vehicleDTO) {
+        return ResponseEntity.ok(vehicleService.create(vehicleDTO));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Vehicle>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
-        List<Vehicle> vehicleList = vehicleService.findAll(isActive);
+    public ResponseEntity<List<VehicleDTO>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
+        List<VehicleDTO> vehicleList = vehicleService.findAll(isActive);
         if (vehicleList.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
@@ -34,8 +35,8 @@ public class VehicleController {
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<Vehicle> findById(@PathVariable Long id) {
-        Optional<Vehicle> vehicleOpt = vehicleService.findById(id);
+    public ResponseEntity<VehicleDTO> findById(@PathVariable Long id) {
+        Optional<VehicleDTO> vehicleOpt = vehicleService.findById(id);
         if (vehicleOpt.isPresent()) {
             return ResponseEntity.ok(vehicleOpt.get());
         } else {
@@ -44,8 +45,8 @@ public class VehicleController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Vehicle> edit(@PathVariable Long id, @RequestBody Vehicle vehicle) {
-        Optional<Vehicle> vehicleOpt = vehicleService.edit(id, vehicle);
+    public ResponseEntity<VehicleDTO> edit(@PathVariable Long id, @RequestBody VehicleDTO vehicle) {
+        Optional<VehicleDTO> vehicleOpt = vehicleService.edit(id, vehicle);
         if (vehicleOpt.isPresent()) {
             return ResponseEntity.ok(vehicleOpt.get());
         } else {

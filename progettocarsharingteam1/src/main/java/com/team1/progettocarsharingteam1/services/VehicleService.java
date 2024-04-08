@@ -1,12 +1,15 @@
 package com.team1.progettocarsharingteam1.services;
 
+import com.team1.progettocarsharingteam1.dto.VehicleDTO;
 import com.team1.progettocarsharingteam1.entities.User;
 import com.team1.progettocarsharingteam1.entities.Vehicle;
 import com.team1.progettocarsharingteam1.entities.enums.TypeVehicleEnum;
 import com.team1.progettocarsharingteam1.repositories.VehicleRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,37 +19,67 @@ public class VehicleService {
     @Autowired
     VehicleRepository vehicleRepository;
 
-    public Vehicle create(Vehicle vehicle) {
-        return vehicleRepository.save(vehicle);
+    public VehicleDTO create(VehicleDTO vehicleDTO) {
+        Vehicle vehicle = new Vehicle();
+        BeanUtils.copyProperties(vehicleDTO ,vehicle);
+        vehicle.setAvailable(true);
+        vehicleRepository.save(vehicle);
+        BeanUtils.copyProperties(vehicle, vehicleDTO);
+        return vehicleDTO;
     }
 
-    public List<Vehicle> findAll(boolean isActive) {
-
+    public List<VehicleDTO> findAll(boolean isActive) {
+        List<VehicleDTO> vehicleDTOList = new ArrayList<>();
+        VehicleDTO vehicleDTO = new VehicleDTO();
         if(isActive) {
             List<Vehicle> vehicleList = vehicleRepository.findAllByIsActiveTrue();
-            return vehicleList;
+            for (Vehicle vehicle : vehicleList) {
+                BeanUtils.copyProperties(vehicle, vehicleDTO);
+                vehicleDTOList.add(vehicleDTO);
+            }
+            return vehicleDTOList;
         }
         List<Vehicle> vehicleList = vehicleRepository.findAll();
-        return vehicleList;
+        for (Vehicle vehicle : vehicleList) {
+            BeanUtils.copyProperties(vehicle, vehicleDTO);
+            vehicleDTOList.add(vehicleDTO);
+        }
+        return vehicleDTOList;
     }
 
-    public Optional<Vehicle> findById(Long id) {
-        return vehicleRepository.findByIdAndIsActiveTrue(id);
-    }
-
-    public Optional<Vehicle> edit(Long id, Vehicle vehicle) {
-        Optional<Vehicle> vehicleOpt = vehicleRepository.findByIdAndIsActiveTrue(id);
-        if (vehicleOpt.isPresent()) {
-            vehicleOpt.get().setBrand(vehicle.getBrand());
-            vehicleOpt.get().setModel(vehicle.getModel());
-            vehicleOpt.get().setDetails(vehicle.getDetails());
-            vehicleOpt.get().setAvailable(vehicle.isAvailable());
-            vehicleOpt.get().setTypeVehicle(vehicle.getTypeVehicle());
-            vehicleRepository.save(vehicleOpt.get());
+    public Optional<VehicleDTO> findById(Long id) {
+        Optional<Vehicle> vehicleOptional = vehicleRepository.findById(id);
+        if (vehicleOptional.isPresent()) {
+            VehicleDTO vehicleDTO = new VehicleDTO();
+            BeanUtils.copyProperties(vehicleOptional.get(), vehicleDTO);
+            return Optional.of(vehicleDTO);
         } else {
             return Optional.empty();
         }
-        return vehicleOpt;
+    }
+
+    public Optional<VehicleDTO> edit(Long id, VehicleDTO vehicle) {
+        Optional<Vehicle> vehicleOpt = vehicleRepository.findByIdAndIsActiveTrue(id);
+        if (vehicleOpt.isPresent()) {
+            if (vehicle.getBrand() != null) {
+                vehicleOpt.get().setBrand(vehicle.getBrand());
+            }
+            if (vehicle.getModel() != null) {
+                vehicleOpt.get().setModel(vehicle.getModel());
+            }
+            if (vehicle.getDetails() != null) {
+                vehicleOpt.get().setDetails(vehicle.getDetails());
+            }
+            vehicleOpt.get().setAvailable(vehicle.isAvailable());
+            if (vehicle.getTypeVehicle() != null) {
+                vehicleOpt.get().setTypeVehicle(vehicle.getTypeVehicle());
+            }
+            Vehicle vehicle1 = vehicleRepository.save(vehicleOpt.get());
+            BeanUtils.copyProperties(vehicle1, vehicle);
+            return Optional.of(vehicle);
+        } else {
+            return Optional.empty();
+        }
     }
 
     public Optional<Vehicle> delete(Long id) {
@@ -116,5 +149,4 @@ public class VehicleService {
         }
         return Optional.empty();
     }
-
 }

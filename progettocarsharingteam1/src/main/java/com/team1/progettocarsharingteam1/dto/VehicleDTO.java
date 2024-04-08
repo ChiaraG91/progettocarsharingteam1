@@ -1,59 +1,21 @@
-package com.team1.progettocarsharingteam1.entities;
+package com.team1.progettocarsharingteam1.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.team1.progettocarsharingteam1.entities.enums.ChargeEnum;
+import com.team1.progettocarsharingteam1.entities.Rent;
 import com.team1.progettocarsharingteam1.entities.enums.CityEnum;
 import com.team1.progettocarsharingteam1.entities.enums.TypeVehicleEnum;
-import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity
-public class Vehicle {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class VehicleDTO {
     private String brand;
-
     private String model;
-
     private String details;
 
     private CityEnum cityEnum;
-
     private boolean isAvailable;
-
-    @Enumerated
     private TypeVehicleEnum typeVehicle;
-
     private boolean isActive = true;
-
-    @OneToMany(mappedBy = "vehicle")
-    @JsonIgnore
     private List<Rent> rentals;
-
-    public Vehicle(long id, TypeVehicleEnum typeVehicle, String brand, String model, String details, boolean isAvailable, List<Rent> rentals, CityEnum cityEnum) {
-        this.id = id;
-        this.typeVehicle = typeVehicle;
-        this.brand = brand;
-        this.model = model;
-        this.details = details;
-        this.isAvailable = isAvailable;
-        this.rentals = rentals;
-        this.cityEnum = cityEnum;
-    }
-
-    public Vehicle() {
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getBrand() {
         return brand;
@@ -87,14 +49,6 @@ public class Vehicle {
         isAvailable = available;
     }
 
-    public List<Rent> getRentals() {
-        return rentals;
-    }
-
-    public void setRentals(List<Rent> rentals) {
-        this.rentals = rentals;
-    }
-
     public TypeVehicleEnum getTypeVehicle() {
         return typeVehicle;
     }
@@ -109,6 +63,14 @@ public class Vehicle {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public List<Rent> getRentals() {
+        return rentals;
+    }
+
+    public void setRentals(List<Rent> rentals) {
+        this.rentals = rentals;
     }
 
     public CityEnum getCityEnum() {
