@@ -14,7 +14,6 @@ public class VehicleDTO {
     private CityEnum cityEnum;
     private boolean isAvailable;
     private TypeVehicleEnum typeVehicle;
-    private boolean isActive = true;
     private List<Rent> rentals;
 
     public String getBrand() {
@@ -55,14 +54,6 @@ public class VehicleDTO {
 
     public void setTypeVehicle(TypeVehicleEnum typeVehicle) {
         this.typeVehicle = typeVehicle;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
     }
 
     public List<Rent> getRentals() {

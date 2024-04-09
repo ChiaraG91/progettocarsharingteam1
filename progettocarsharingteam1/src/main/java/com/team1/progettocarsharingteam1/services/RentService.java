@@ -73,7 +73,7 @@ public class RentService {
         }
     }
 
-    public Rent startRent(Long userId, Long vehicleId) {
+    public Optional<Rent> startRent(Long userId, Long vehicleId) {
         Rent newRent = new Rent();
         Optional<User> userOpt = userRepository.findByIdAndIsActiveTrue(userId);
         Optional<Vehicle> vehicleOpt = vehicleRepository.findByIdAndIsActiveTrue(vehicleId);
@@ -88,9 +88,9 @@ public class RentService {
             vehicleRepository.save(vehicleOpt.get());
 
             Rent savedRent = rentRepository.save(newRent);
-            return savedRent;
+            return Optional.of(savedRent);
         }
-        return null;
+        return Optional.empty();
     }
 
     public Optional<Rent> endRent(Long rentId, Long vehicleId) {

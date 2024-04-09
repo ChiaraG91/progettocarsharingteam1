@@ -22,6 +22,7 @@ public class Rent {
     @Column(nullable = false)
     private Double price;
 
+    //field for soft delete
     @Column(nullable = false)
     private boolean isActive = true;
 

@@ -1,8 +1,8 @@
 package com.team1.progettocarsharingteam1.services;
 
 import com.team1.progettocarsharingteam1.dto.VehicleDTO;
-import com.team1.progettocarsharingteam1.entities.User;
 import com.team1.progettocarsharingteam1.entities.Vehicle;
+import com.team1.progettocarsharingteam1.entities.enums.CityEnum;
 import com.team1.progettocarsharingteam1.entities.enums.TypeVehicleEnum;
 import com.team1.progettocarsharingteam1.repositories.VehicleRepository;
 import org.springframework.beans.BeanUtils;
@@ -148,5 +148,23 @@ public class VehicleService {
             return Optional.of(vehicleUpdated);
         }
         return Optional.empty();
+    }
+
+    /**
+     * find a list of VehicleDTO based on the specified CityEnum
+     *
+     * @param city the CityEnum value representing the city to search for vehicles
+     * @return a List of VehicleDTO found in the specified city
+     */
+    public List<VehicleDTO> findAllByCityEnum(CityEnum city) {
+        List<VehicleDTO> vehicleDTOList = new ArrayList<>();
+        VehicleDTO vehicleDTO = new VehicleDTO();
+        List<Vehicle> vehicleList = vehicleRepository.findAllByCityEnumAndIsActiveTrue(city);
+
+        for (Vehicle vehicle : vehicleList) {
+            BeanUtils.copyProperties(vehicle, vehicleDTO);
+            vehicleDTOList.add(vehicleDTO);
+        }
+        return vehicleDTOList;
     }
 }

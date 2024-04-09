@@ -40,6 +40,7 @@ public class User {
     @Column(nullable = false)
     private boolean isVerified;
 
+    //field for soft delete
     @Column(nullable = false)
     private boolean isActive = true;
 

@@ -3,6 +3,7 @@ package com.team1.progettocarsharingteam1.controllers;
 import com.team1.progettocarsharingteam1.dto.VehicleDTO;
 import com.team1.progettocarsharingteam1.entities.User;
 import com.team1.progettocarsharingteam1.entities.Vehicle;
+import com.team1.progettocarsharingteam1.entities.enums.CityEnum;
 import com.team1.progettocarsharingteam1.entities.enums.TypeVehicleEnum;
 import com.team1.progettocarsharingteam1.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,6 +143,22 @@ public class VehicleController {
             return ResponseEntity.ok().body(vehicleOpt.get());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    /**
+     * find a list of vehicles by the specified city.
+     *
+     * @param city the CityEnum value representing the city to search for vehicles
+     * @return ResponseEntity containing a List of VehicleDTO, or a 404 Not Found if no vehicles are found
+     */
+    @GetMapping("/city")
+    public ResponseEntity<List<VehicleDTO>> findAllByCityEnum(@RequestParam CityEnum city) {
+        List<VehicleDTO> vehicleDTOList = vehicleService.findAllByCityEnum(city);
+
+        if(vehicleDTOList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(vehicleDTOList);
     }
 
 }

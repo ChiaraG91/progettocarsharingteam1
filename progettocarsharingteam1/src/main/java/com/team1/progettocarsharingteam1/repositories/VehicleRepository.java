@@ -1,6 +1,7 @@
 package com.team1.progettocarsharingteam1.repositories;
 
 import com.team1.progettocarsharingteam1.entities.Vehicle;
+import com.team1.progettocarsharingteam1.entities.enums.CityEnum;
 import com.team1.progettocarsharingteam1.entities.enums.TypeVehicleEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +25,6 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
     Optional<Vehicle> findByIdAndIsActiveTrue(Long id);
 
     List<Vehicle> findAllByIsActiveTrue();
+
+    List<Vehicle> findAllByCityEnumAndIsActiveTrue(CityEnum city);
 }

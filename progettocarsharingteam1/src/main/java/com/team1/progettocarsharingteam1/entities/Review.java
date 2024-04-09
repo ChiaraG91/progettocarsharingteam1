@@ -21,6 +21,7 @@ public class Review {
     @Column(nullable = false)
     private RatingEnum rating;
 
+    //field for soft delete
     @Column(nullable = false)
     private boolean isActive = true;
 
