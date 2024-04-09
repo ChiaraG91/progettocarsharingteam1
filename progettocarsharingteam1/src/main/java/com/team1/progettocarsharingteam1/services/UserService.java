@@ -1,11 +1,16 @@
 package com.team1.progettocarsharingteam1.services;
 
+import com.team1.progettocarsharingteam1.dto.UserDTO;
+import com.team1.progettocarsharingteam1.dto.VehicleDTO;
 import com.team1.progettocarsharingteam1.entities.Rent;
 import com.team1.progettocarsharingteam1.entities.User;
+import com.team1.progettocarsharingteam1.entities.Vehicle;
 import com.team1.progettocarsharingteam1.repositories.UserRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,23 +19,43 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User create(User user) {
-        return userRepository.save(user);
+    public UserDTO create(UserDTO userDTO) {
+        User user = new User();
+        BeanUtils.copyProperties(userDTO ,user);
+        userRepository.save(user);
+        BeanUtils.copyProperties(user, userDTO);
+        return userDTO;
     }
 
 
-    public List<User> findAll(boolean isActive) {
-
-        if (isActive) {
+    public List<UserDTO> findAll(boolean isActive) {
+        List<UserDTO> userDTOList = new ArrayList<>();
+        UserDTO userDTO = new UserDTO();
+        if(isActive) {
             List<User> userList = userRepository.findAllByIsActiveTrue();
-            return userList;
+            for (User user : userList) {
+                BeanUtils.copyProperties(user, userDTO);
+                userDTOList.add(userDTO);
+            }
+            return userDTOList;
         }
         List<User> userList = userRepository.findAll();
-        return userList;
+        for (User user : userList) {
+            BeanUtils.copyProperties(user, userDTO);
+            userDTOList.add(userDTO);
+        }
+        return userDTOList;
     }
 
-    public Optional<User> findById(Long id) {
-        return userRepository.findByIdAndIsActiveTrue(id);
+    public Optional<UserDTO> findById(Long id) {
+        Optional<User> userOptional = userRepository.findByIdAndIsActiveTrue(id);
+        if (userOptional.isPresent()) {
+            UserDTO userDTO = new UserDTO();
+            BeanUtils.copyProperties(userOptional.get(), userDTO);
+            return Optional.of(userDTO);
+        } else {
+            return Optional.empty();
+        }
     }
 
     public Optional<User> edit(Long id, User user) {

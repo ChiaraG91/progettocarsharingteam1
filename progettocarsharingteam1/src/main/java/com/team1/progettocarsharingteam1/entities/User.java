@@ -14,34 +14,34 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String surname;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private LocalDate dateOfBirth;
 
-    @Column(nullable = false, unique = true)
+    //@Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, unique = true)
+    //@Column(nullable = false, unique = true)
     private String taxId;
 
     private String sex;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String address;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String licenseNumber;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private boolean isVerified;
 
     //field for soft delete
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private boolean isActive = true;
 
     @JsonIgnore

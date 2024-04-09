@@ -56,8 +56,8 @@ public class VehicleController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Vehicle> delete(@PathVariable Long id) {
-        Optional<Vehicle> vehicleOpt = vehicleService.delete(id);
+    public ResponseEntity<VehicleDTO> delete(@PathVariable Long id) {
+        Optional<VehicleDTO> vehicleOpt = vehicleService.delete(id);
         if (vehicleOpt.isPresent()) {
             return ResponseEntity.ok(vehicleOpt.get());
         } else {
@@ -72,12 +72,12 @@ public class VehicleController {
      * @return the list of vehicles with the same brand
      */
     @GetMapping("/brand")
-    public ResponseEntity<List<Vehicle>> findByBrand(@RequestParam String brand) {
-        List<Vehicle> vehicleList = vehicleService.findByBrand(brand);
+    public ResponseEntity<List<VehicleDTO>> findByBrand(@RequestParam String brand) {
+        Optional<List<VehicleDTO>> vehicleList = vehicleService.findByBrand(brand);
         if (vehicleList.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(vehicleList);
+            return ResponseEntity.ok(vehicleList.get());
         }
     }
 
@@ -88,12 +88,12 @@ public class VehicleController {
      * @return the list of vehicles with the same model
      */
     @GetMapping("/model")
-    public ResponseEntity<List<Vehicle>> findByModel(@RequestParam String model) {
-        List<Vehicle> vehicleList = vehicleService.findByModel(model);
+    public ResponseEntity<List<VehicleDTO>> findByModel(@RequestParam String model) {
+        Optional<List<VehicleDTO>> vehicleList = vehicleService.findByModel(model);
         if (vehicleList.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(vehicleList);
+            return ResponseEntity.ok(vehicleList.get());
         }
     }
 
@@ -103,12 +103,12 @@ public class VehicleController {
      * @return the list of available vehicles
      */
     @GetMapping("/available")
-    public ResponseEntity<List<Vehicle>> findByAvailable() {
-        List<Vehicle> vehicleList = vehicleService.findAllAvailable();
+    public ResponseEntity<List<VehicleDTO>> findByAvailable() {
+        Optional<List<VehicleDTO>> vehicleList = vehicleService.findAllAvailable();
         if (vehicleList.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(vehicleList);
+            return ResponseEntity.ok(vehicleList.get());
         }
     }
 
@@ -119,12 +119,12 @@ public class VehicleController {
      * @return the list of vehicles with the same type
      */
     @GetMapping("/type")
-    public ResponseEntity<List<Vehicle>> findByType(@RequestParam TypeVehicleEnum typeVehicleEnum) {
-        List<Vehicle> vehicleList = vehicleService.findByTypeVehicle(typeVehicleEnum);
+    public ResponseEntity<List<VehicleDTO>> findByType(@RequestParam TypeVehicleEnum typeVehicleEnum) {
+        Optional<List<VehicleDTO>> vehicleList = vehicleService.findByTypeVehicle(typeVehicleEnum);
         if (vehicleList.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(vehicleList);
+            return ResponseEntity.ok(vehicleList.get());
         }
     }
 
@@ -153,12 +153,11 @@ public class VehicleController {
      */
     @GetMapping("/city")
     public ResponseEntity<List<VehicleDTO>> findAllByCityEnum(@RequestParam CityEnum city) {
-        List<VehicleDTO> vehicleDTOList = vehicleService.findAllByCityEnum(city);
-
+        Optional<List<VehicleDTO>> vehicleDTOList = vehicleService.findAllByCityEnum(city);
         if(vehicleDTOList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().body(vehicleDTOList);
+        return ResponseEntity.ok().body(vehicleDTOList.get());
     }
 
 }

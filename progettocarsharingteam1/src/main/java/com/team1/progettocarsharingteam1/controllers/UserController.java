@@ -1,5 +1,6 @@
 package com.team1.progettocarsharingteam1.controllers;
 
+import com.team1.progettocarsharingteam1.dto.UserDTO;
 import com.team1.progettocarsharingteam1.entities.Rent;
 import com.team1.progettocarsharingteam1.entities.Review;
 import com.team1.progettocarsharingteam1.entities.User;
@@ -18,20 +19,18 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity<User> create(@RequestBody User user) {
-        User user1 = userService.create(user);
-        return ResponseEntity.ok().body(user1);
+    public ResponseEntity<UserDTO> create(@RequestBody UserDTO user) {
+        return ResponseEntity.ok().body(userService.create(user));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<User>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
-        List<User> userList = userService.findAll(isActive);
-        return ResponseEntity.ok().body(userList);
+    public ResponseEntity<List<UserDTO>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
+        return ResponseEntity.ok().body(userService.findAll(isActive));
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id) {
-        Optional<User> optionalUser = userService.findById(id);
+    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
+        Optional<UserDTO> optionalUser = userService.findById(id);
         if (optionalUser.isPresent()) {
             return ResponseEntity.ok(optionalUser.get());
         } else {

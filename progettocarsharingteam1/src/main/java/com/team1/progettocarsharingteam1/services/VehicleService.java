@@ -82,11 +82,13 @@ public class VehicleService {
         }
     }
 
-    public Optional<Vehicle> delete(Long id) {
+    public Optional<VehicleDTO> delete(Long id) {
         Optional<Vehicle> vehicleOpt = vehicleRepository.findById(id);
         if (vehicleOpt.isPresent()) {
-            vehicleRepository.delete(vehicleOpt.get());
-            return vehicleOpt;
+            VehicleDTO vehicleDTO = new VehicleDTO();
+            vehicleOpt.get().setActive(false);
+            BeanUtils.copyProperties(vehicleOpt.get(), vehicleDTO);
+            return Optional.of(vehicleDTO);
         } else {
             return Optional.empty();
         }
@@ -98,8 +100,19 @@ public class VehicleService {
      * @param brand of the vehicle to find
      * @return the list of vehicles with the same brand
      */
-    public List<Vehicle> findByBrand(String brand) {
-        return vehicleRepository.findByBrandAndIsActiveTrue(brand);
+    public Optional<List<VehicleDTO>> findByBrand(String brand) {
+        List<Vehicle> vehicleList = vehicleRepository.findByBrandAndIsActiveTrue(brand);
+        List<VehicleDTO> vehicleDTOList = new ArrayList<>();
+        if (vehicleList.isEmpty()) {
+            return Optional.empty();
+        } else {
+            for (Vehicle vehicle : vehicleList) {
+                VehicleDTO vehicleDTO = new VehicleDTO();
+                BeanUtils.copyProperties(vehicle, vehicleDTO);
+                vehicleDTOList.add(vehicleDTO);
+            }
+            return Optional.of(vehicleDTOList);
+        }
     }
 
     /**
@@ -108,8 +121,19 @@ public class VehicleService {
      * @param model of the vehicle to find
      * @return the list of vehicles with the same model
      */
-    public List<Vehicle> findByModel(String model) {
-        return vehicleRepository.findByModelAndIsActiveTrue(model);
+    public Optional<List<VehicleDTO>> findByModel(String model) {
+        List<Vehicle> vehicleList = vehicleRepository.findByModelAndIsActiveTrue(model);
+        List<VehicleDTO> vehicleDTOList = new ArrayList<>();
+        if (vehicleList.isEmpty()) {
+            return Optional.empty();
+        } else {
+            for (Vehicle vehicle : vehicleList) {
+                VehicleDTO vehicleDTO = new VehicleDTO();
+                BeanUtils.copyProperties(vehicle, vehicleDTO);
+                vehicleDTOList.add(vehicleDTO);
+            }
+            return Optional.of(vehicleDTOList);
+        }
     }
 
     /**
@@ -117,8 +141,19 @@ public class VehicleService {
      *
      * @return the list of vehicles
      */
-    public List<Vehicle> findAllAvailable() {
-        return vehicleRepository.findAllAvailable();
+    public Optional<List<VehicleDTO>> findAllAvailable() {
+        List<Vehicle> vehicleList = vehicleRepository.findAllAvailable();
+        List<VehicleDTO> vehicleDTOList = new ArrayList<>();
+        if (vehicleList.isEmpty()) {
+            return Optional.empty();
+        } else {
+            for (Vehicle vehicle : vehicleList) {
+                VehicleDTO vehicleDTO = new VehicleDTO();
+                BeanUtils.copyProperties(vehicle, vehicleDTO);
+                vehicleDTOList.add(vehicleDTO);
+            }
+            return Optional.of(vehicleDTOList);
+        }
     }
 
     /**
@@ -127,9 +162,21 @@ public class VehicleService {
      * @param typeVehicleEnum the type of vehicle to find
      * @return the list of vehicles with the same type
      */
-    public List<Vehicle> findByTypeVehicle(TypeVehicleEnum typeVehicleEnum) {
-        return vehicleRepository.findByTypeVehicleAndIsActiveTrue(typeVehicleEnum);
+    public Optional<List<VehicleDTO>> findByTypeVehicle(TypeVehicleEnum typeVehicleEnum) {
+        List<Vehicle> vehicleList = vehicleRepository.findByTypeVehicleAndIsActiveTrue(typeVehicleEnum);
+        List<VehicleDTO> vehicleDTOList = new ArrayList<>();
+        if (vehicleList.isEmpty()) {
+            return Optional.empty();
+        } else {
+            for (Vehicle vehicle : vehicleList) {
+                VehicleDTO vehicleDTO = new VehicleDTO();
+                BeanUtils.copyProperties(vehicle, vehicleDTO);
+                vehicleDTOList.add(vehicleDTO);
+            }
+            return Optional.of(vehicleDTOList);
+        }
     }
+
 
     /**
      * Sets the isActive field of a vehicle to true or false, effectively performing a soft delete
@@ -156,15 +203,19 @@ public class VehicleService {
      * @param city the CityEnum value representing the city to search for vehicles
      * @return a List of VehicleDTO found in the specified city
      */
-    public List<VehicleDTO> findAllByCityEnum(CityEnum city) {
+    public Optional<List<VehicleDTO>> findAllByCityEnum(CityEnum city) {
         List<VehicleDTO> vehicleDTOList = new ArrayList<>();
-        VehicleDTO vehicleDTO = new VehicleDTO();
         List<Vehicle> vehicleList = vehicleRepository.findAllByCityEnumAndIsActiveTrue(city);
-
-        for (Vehicle vehicle : vehicleList) {
-            BeanUtils.copyProperties(vehicle, vehicleDTO);
-            vehicleDTOList.add(vehicleDTO);
+        if (vehicleList.isEmpty()) {
+            return Optional.empty();
+        } else {
+            for (Vehicle vehicle : vehicleList) {
+                VehicleDTO vehicleDTO = new VehicleDTO();
+                BeanUtils.copyProperties(vehicle, vehicleDTO);
+                vehicleDTOList.add(vehicleDTO);
+            }
+            return Optional.of(vehicleDTOList);
         }
-        return vehicleDTOList;
+
     }
 }
