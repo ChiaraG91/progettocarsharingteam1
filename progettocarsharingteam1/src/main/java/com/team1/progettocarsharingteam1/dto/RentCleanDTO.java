@@ -1,17 +1,15 @@
 package com.team1.progettocarsharingteam1.dto;
 
-import com.team1.progettocarsharingteam1.entities.User;
-import com.team1.progettocarsharingteam1.entities.Vehicle;
-
 import java.time.LocalDateTime;
 
-public class RentDTO {
+public class RentCleanDTO {
     private LocalDateTime startTme;
     private LocalDateTime endTime;
     private Double price;
     private boolean isActive;
-    private User user;
-    private Vehicle vehicle;
+    private UserDTO userDTO;
+    private VehicleDTO vehicleDTO;
+
     public LocalDateTime getStartTme() {
         return startTme;
     }
@@ -36,20 +34,20 @@ public class RentDTO {
         this.price = price;
     }
 
-    public User getUser() {
-        return user;
+    public UserDTO getUserDTO() {
+        return userDTO;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public VehicleDTO getVehicleDTO() {
+        return vehicleDTO;
     }
 
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
+    public void setVehicleDTO(VehicleDTO vehicleDTO) {
+        this.vehicleDTO = vehicleDTO;
     }
 
     public boolean isActive() {

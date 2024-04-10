@@ -1,7 +1,11 @@
 package com.team1.progettocarsharingteam1.services;
 
+import com.team1.progettocarsharingteam1.dto.RentCleanDTO;
 import com.team1.progettocarsharingteam1.dto.RentDTO;
+import com.team1.progettocarsharingteam1.dto.UserDTO;
+import com.team1.progettocarsharingteam1.dto.VehicleDTO;
 import com.team1.progettocarsharingteam1.entities.Rent;
+import com.team1.progettocarsharingteam1.entities.Vehicle;
 import com.team1.progettocarsharingteam1.entities.enums.ChargeEnum;
 import com.team1.progettocarsharingteam1.repositories.RentRepository;
 import com.team1.progettocarsharingteam1.repositories.UserRepository;
@@ -29,24 +33,25 @@ public class RentService {
     private VehicleRepository vehicleRepository;
 
 
-    public RentDTO create(RentDTO rentDTO) {
+    public RentCleanDTO create(RentDTO rentDTO) {
         Rent rent = new Rent();
         BeanUtils.copyProperties(rentDTO, rent);
         rent.setStartTme(LocalDateTime.now());
         Rent rent1 = rentRepository.save(rent);
         BeanUtils.copyProperties(rent1, rentDTO);
-        return rentDTO;
+        return cleanDTO(rentDTO);
     }
 
 
-    public List<RentDTO> findAll(boolean isActive) {
-        List<RentDTO> rentDTOList = new ArrayList<>();
+    public List<RentCleanDTO> findAll(boolean isActive) {
+        List<RentCleanDTO> rentDTOList = new ArrayList<>();
         if(isActive) {
             List<Rent> rentList = rentRepository.findAllByIsActiveTrue();
             for (Rent rent : rentList) {
                 RentDTO rentDTO = new RentDTO();
                 BeanUtils.copyProperties(rent, rentDTO);
-                rentDTOList.add(rentDTO);
+                RentCleanDTO rentCleanDTO = cleanDTO(rentDTO);
+                rentDTOList.add(rentCleanDTO);
             }
             return rentDTOList;
         }
@@ -54,23 +59,25 @@ public class RentService {
         for (Rent rent : rentList) {
             RentDTO rentDTO = new RentDTO();
             BeanUtils.copyProperties(rent, rentDTO);
-            rentDTOList.add(rentDTO);
+            RentCleanDTO rentCleanDTO = cleanDTO(rentDTO);
+            rentDTOList.add(rentCleanDTO);
         }
         return rentDTOList;
     }
 
-    public Optional<RentDTO> findById(Long id) {
+    public Optional<RentCleanDTO> findById(Long id) {
         Optional<Rent> rentOPT = rentRepository.findByIdAndIsActiveTrue(id);
         if (rentOPT.isPresent()) {
             RentDTO rentDTO = new RentDTO();
             BeanUtils.copyProperties(rentOPT.get(), rentDTO);
-            return Optional.of(rentDTO);
+            RentCleanDTO rentCleanDTO = cleanDTO(rentDTO);
+            return Optional.of(rentCleanDTO);
         } else {
             return Optional.empty();
         }
     }
 
-    public Optional<RentDTO> edit(Long id, Rent rent){
+    public Optional<RentCleanDTO> edit(Long id, RentDTO rent){
         Optional<Rent> updatedRent = rentRepository.findByIdAndIsActiveTrue(id);
         if (updatedRent.isPresent()){
             RentDTO rentDTO = new RentDTO();
@@ -79,26 +86,28 @@ public class RentService {
             updatedRent.get().setEndTime(rent.getEndTime());
             Rent rent1 = rentRepository.save(updatedRent.get());
             BeanUtils.copyProperties(rent1, rentDTO);
-            return Optional.of(rentDTO);
+            RentCleanDTO rentCleanDTO = cleanDTO(rentDTO);
+            return Optional.of(rentCleanDTO);
         } else {
             return Optional.empty();
         }
     }
 
-    public Optional<RentDTO> delete(Long id){
+    public Optional<RentCleanDTO> delete(Long id){
         Optional<Rent> deletedRentOPT = rentRepository.findById(id);
         if(deletedRentOPT.isPresent()){
             RentDTO rentDTO = new RentDTO();
             deletedRentOPT.get().setActive(false);
             Rent rent = rentRepository.save(deletedRentOPT.get());
             BeanUtils.copyProperties(rent, rentDTO);
-            return Optional.of(rentDTO);
+            RentCleanDTO rentCleanDTO = cleanDTO(rentDTO);
+            return Optional.of(rentCleanDTO);
         }else{
             return Optional.empty();
         }
     }
 
-    public Optional<RentDTO> endRent(Long rentId) {
+    public Optional<RentCleanDTO> endRent(Long rentId) {
         Optional<Rent> rentOptional = rentRepository.findById(rentId);
         if (rentOptional.isPresent() && rentOptional.get().isActive()) {
             RentDTO rentDTO = new RentDTO();
@@ -107,22 +116,24 @@ public class RentService {
             rentOptional.get().setActive(false);
             Rent rent = rentRepository.save(rentOptional.get());
             BeanUtils.copyProperties(rent, rentDTO);
-            return Optional.of(rentDTO);
+            RentCleanDTO rentCleanDTO = cleanDTO(rentDTO);
+            return Optional.of(rentCleanDTO);
         } else {
             return Optional.empty();
         }
     }
 
-    public Optional<List<RentDTO>> rentByid(Long id) {
+    public Optional<List<RentCleanDTO>> rentByid(Long id) {
         List<Rent> optionalRents = userRepository.findAllOrdiniByUserId(id);
         if (optionalRents.isEmpty()) {
             return Optional.empty();
         } else {
-            List<RentDTO> rentDTOList = new ArrayList<>();
+            List<RentCleanDTO> rentDTOList = new ArrayList<>();
             for (Rent rent : optionalRents) {
                 RentDTO rentDTO = new RentDTO();
                 BeanUtils.copyProperties(rent, rentDTO);
-                rentDTOList.add(rentDTO);
+                RentCleanDTO rentCleanDTO = cleanDTO(rentDTO);
+                rentDTOList.add(rentCleanDTO);
             }
             return Optional.of(rentDTOList);
         }
@@ -135,14 +146,15 @@ public class RentService {
      * @param isActive the boolean value to set for the isActive field
      * @return an Optional containing the updated rent if it exists, or an empty Optional if the rent is not found
      */
-    public Optional<RentDTO> editActive(Long id, boolean isActive) {
+    public Optional<RentCleanDTO> editActive(Long id, boolean isActive) {
         Optional<Rent> rentOpt = rentRepository.findById(id);
         if (rentOpt.isPresent()){
             RentDTO rentDTO = new RentDTO();
             rentOpt.get().setActive(isActive);
             Rent rentUpdated = rentRepository.save(rentOpt.get());
             BeanUtils.copyProperties(rentUpdated, rentDTO);
-            return Optional.of(rentDTO);
+            RentCleanDTO rentCleanDTO = cleanDTO(rentDTO);
+            return Optional.of(rentCleanDTO);
         }
         return Optional.empty();
     }
@@ -161,6 +173,25 @@ public class RentService {
 
     public boolean contine(Long valore, Long min, Long max) {
         return valore >= min && valore <= max;
+    }
+
+    public static RentCleanDTO cleanDTO(RentDTO rentDTO) {
+        RentCleanDTO rentCleanDTO = new RentCleanDTO();
+        rentCleanDTO.setStartTme(rentDTO.getStartTme());
+        rentCleanDTO.setEndTime(rentDTO.getEndTime());
+        rentCleanDTO.setPrice(rentDTO.getPrice());
+        rentCleanDTO.setActive(rentDTO.isActive());
+
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(rentDTO.getUser(), userDTO);
+        rentCleanDTO.setUserDTO(userDTO);
+
+        VehicleDTO vehicleDTO = new VehicleDTO();
+        BeanUtils.copyProperties(rentDTO.getVehicle(), vehicleDTO);
+        // Copia altri campi di Veicolo se necessario
+        rentCleanDTO.setVehicleDTO(vehicleDTO);
+
+        return rentCleanDTO;
     }
 }
 
