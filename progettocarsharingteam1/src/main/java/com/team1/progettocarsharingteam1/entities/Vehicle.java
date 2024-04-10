@@ -14,14 +14,19 @@ public class Vehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //@Column(nullable = false)
     private String brand;
 
+    //@Column(nullable = false)
     private String model;
 
+    //@Column(nullable = false)
     private String details;
 
+    //@Column(nullable = false)
     private CityEnum cityEnum;
 
+    //@Column(nullable = false)
     private boolean isAvailable;
 
     @Enumerated

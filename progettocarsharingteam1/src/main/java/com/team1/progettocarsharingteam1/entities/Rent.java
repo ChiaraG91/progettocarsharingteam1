@@ -13,17 +13,17 @@ public class Rent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private LocalDateTime startTme;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private LocalDateTime endTime;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private Double price;
 
     //field for soft delete
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private boolean isActive = true;
 
     @ManyToOne

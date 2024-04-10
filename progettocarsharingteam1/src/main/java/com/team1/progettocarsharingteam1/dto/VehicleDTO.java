@@ -14,7 +14,6 @@ public class VehicleDTO {
     private CityEnum cityEnum;
     private boolean isAvailable;
     private TypeVehicleEnum typeVehicle;
-    private List<Rent> rentals;
 
     public String getBrand() {
         return brand;
@@ -56,13 +55,6 @@ public class VehicleDTO {
         this.typeVehicle = typeVehicle;
     }
 
-    public List<Rent> getRentals() {
-        return rentals;
-    }
-
-    public void setRentals(List<Rent> rentals) {
-        this.rentals = rentals;
-    }
 
     public CityEnum getCityEnum() {
         return cityEnum;

@@ -2,19 +2,29 @@ package com.team1.progettocarsharingteam1.entities.enums;
 
 public enum ChargeEnum {
 
-    HOURLY (6.0);
+    SHORT (0.5, 0L, 60L),
+    MEDIUM(0.4, 61L, 240L),
+    LONG(0.2, null, null);
 
-    private Double chargeEnum;
+    private final Double chargeEnum;
+    private final Long min;
+    private final Long max;
 
-    ChargeEnum(Double charge) {
+    ChargeEnum(Double chargeEnum, Long min, Long max) {
         this.chargeEnum = chargeEnum;
+        this.min = min;
+        this.max = max;
     }
 
-    public double getChargeEnum() {
+    public Double getChargeEnum() {
         return chargeEnum;
     }
 
-    public void setChargeEnum(Double chargeEnum) {
-        this.chargeEnum = chargeEnum;
+    public Long getMin() {
+        return min;
+    }
+
+    public Long getMax() {
+        return max;
     }
 }

@@ -39,8 +39,8 @@ public class UserController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<User> edit(@RequestBody User user, @PathVariable Long id) {
-        Optional<User> userOptional = userService.edit(id, user);
+    public ResponseEntity<UserDTO> edit(@RequestBody UserDTO user, @PathVariable Long id) {
+        Optional<UserDTO> userOptional = userService.edit(id, user);
         if (userOptional.isPresent()) {
             return ResponseEntity.ok(userOptional.get());
         } else {
@@ -49,20 +49,10 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    ResponseEntity<User> delete(@PathVariable Long id) {
-        Optional<User> userOptional = userService.delete(id);
+    ResponseEntity<UserDTO> delete(@PathVariable Long id) {
+        Optional<UserDTO> userOptional = userService.delete(id);
         if (userOptional.isPresent()) {
             return ResponseEntity.ok(userOptional.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("/rents/{id}")
-    ResponseEntity<List<Rent>> rentById(@PathVariable Long id) {
-        Optional<List<Rent>> optionalRents = userService.rentByid(id);
-        if (optionalRents.isPresent()) {
-            return ResponseEntity.ok(optionalRents.get());
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -75,12 +65,12 @@ public class UserController {
      * @return a list of users with the given name
      */
     @GetMapping("/find/name")
-    ResponseEntity<List<User>> findByName(@RequestParam String name) {
-        List<User> list = userService.findByName(name);
+    ResponseEntity<List<UserDTO>> findByName(@RequestParam String name) {
+        Optional<List<UserDTO>> list = userService.findByName(name);
         if (list.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(list);
+            return ResponseEntity.ok(list.get());
         }
     }
 
@@ -91,12 +81,12 @@ public class UserController {
      * @return a list of users with the given surname
      */
     @GetMapping("/find/surname")
-    ResponseEntity<List<User>> findBySurname(@RequestParam String surname) {
-        List<User> list = userService.findBySurname(surname);
+    ResponseEntity<List<UserDTO>> findBySurname(@RequestParam String surname) {
+        Optional<List<UserDTO>> list = userService.findBySurname(surname);
         if (list.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(list);
+            return ResponseEntity.ok(list.get());
         }
     }
 
@@ -108,8 +98,8 @@ public class UserController {
      * @return ResponseEntity containing the updated user, or a 404 Not Found response if the user is not found.
      */
     @PutMapping("/edit-active/{id}")
-    public ResponseEntity<User> editActive(@PathVariable Long id, @RequestParam boolean isActive) {
-        Optional<User> userOpt = userService.editActive(id, isActive);
+    public ResponseEntity<UserDTO> editActive(@PathVariable Long id, @RequestParam boolean isActive) {
+        Optional<UserDTO> userOpt = userService.editActive(id, isActive);
 
         if (userOpt.isPresent()) {
             return ResponseEntity.ok().body(userOpt.get());

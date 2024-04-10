@@ -23,8 +23,8 @@ public class VehicleService {
         Vehicle vehicle = new Vehicle();
         BeanUtils.copyProperties(vehicleDTO ,vehicle);
         vehicle.setAvailable(true);
-        vehicleRepository.save(vehicle);
-        BeanUtils.copyProperties(vehicle, vehicleDTO);
+        Vehicle vehicle1 = vehicleRepository.save(vehicle);
+        BeanUtils.copyProperties(vehicle1, vehicleDTO);
         return vehicleDTO;
     }
 
@@ -87,7 +87,8 @@ public class VehicleService {
         if (vehicleOpt.isPresent()) {
             VehicleDTO vehicleDTO = new VehicleDTO();
             vehicleOpt.get().setActive(false);
-            BeanUtils.copyProperties(vehicleOpt.get(), vehicleDTO);
+            Vehicle vehicle = vehicleRepository.save(vehicleOpt.get());
+            BeanUtils.copyProperties(vehicle, vehicleDTO);
             return Optional.of(vehicleDTO);
         } else {
             return Optional.empty();

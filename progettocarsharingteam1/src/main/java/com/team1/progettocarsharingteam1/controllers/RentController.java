@@ -1,7 +1,7 @@
 package com.team1.progettocarsharingteam1.controllers;
 
+import com.team1.progettocarsharingteam1.dto.RentDTO;
 import com.team1.progettocarsharingteam1.entities.Rent;
-import com.team1.progettocarsharingteam1.entities.enums.ChargeEnum;
 import com.team1.progettocarsharingteam1.services.RentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,26 +18,25 @@ public class RentController {
     private RentService rentService;
 
     @PostMapping("/create")
-    public ResponseEntity<Rent> create(@RequestBody Rent rent) {
-        Rent rent1 = rentService.create(rent);
-        return ResponseEntity.ok().body(rent1);
+    public ResponseEntity<RentDTO> create(@RequestBody RentDTO rent) {
+        return ResponseEntity.ok(rentService.create(rent));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Rent>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
-        List<Rent> allRentals = rentService.findAll(isActive);
+    public ResponseEntity<List<RentDTO>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
+        List<RentDTO> allRentals = rentService.findAll(isActive);
         return ResponseEntity.ok().body(allRentals);
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<Optional<Rent>> findById(@PathVariable Long id) {
-        Optional<Rent> rentOPT = rentService.findById(id);
+    public ResponseEntity<Optional<RentDTO>> findById(@PathVariable Long id) {
+        Optional<RentDTO> rentOPT = rentService.findById(id);
         return ResponseEntity.ok().body(rentOPT);
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Rent> edit(@PathVariable Long id, @RequestBody Rent rent) {
-        Optional<Rent> updatedRentOPT = rentService.edit(id, rent);
+    public ResponseEntity<RentDTO> edit(@PathVariable Long id, @RequestBody Rent rent) {
+        Optional<RentDTO> updatedRentOPT = rentService.edit(id, rent);
         if (updatedRentOPT.isPresent()) {
             return ResponseEntity.ok().body(updatedRentOPT.get());
         }
@@ -45,8 +44,8 @@ public class RentController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Optional<Rent>> delete(@RequestParam Long id) {
-        Optional<Rent> deletedRentOPT = rentService.delete(id);
+    public ResponseEntity<Optional<RentDTO>> delete(@RequestParam Long id) {
+        Optional<RentDTO> deletedRentOPT = rentService.delete(id);
         if (deletedRentOPT.isPresent()) {
             return ResponseEntity.ok().body(deletedRentOPT);
         }
@@ -54,20 +53,19 @@ public class RentController {
 
     }
 
-    @PostMapping("/start/{userId}/{vehicleId}")
-    public ResponseEntity<Rent> startRent(@PathVariable Long userId, @PathVariable Long vehicleId) {
-        Optional<Rent> startRentOpt = rentService.startRent(userId, vehicleId);
-
-        if(startRentOpt.isPresent()) {
-            return ResponseEntity.ok().body(startRentOpt.get());
+    @GetMapping("/user/{id}")
+    ResponseEntity<List<RentDTO>> rentById(@PathVariable Long id) {
+        Optional<List<RentDTO>> optionalRents = rentService.rentByid(id);
+        if (optionalRents.isPresent()) {
+            return ResponseEntity.ok(optionalRents.get());
+        } else {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/end/{userId}/{vehicleId}")
-    public ResponseEntity<Rent> endRent(@PathVariable Long userId, @PathVariable Long vehicleId) {
-        Optional<Rent> endRentOpt = rentService.endRent(userId, vehicleId);
-
+    @PutMapping("/end/{id}")
+    public ResponseEntity<RentDTO> endRent(@PathVariable Long id) {
+        Optional<RentDTO> endRentOpt = rentService.endRent(id);
         if (endRentOpt.isPresent()) {
             return ResponseEntity.ok().body(endRentOpt.get());
         }
@@ -82,9 +80,8 @@ public class RentController {
      * @return ResponseEntity containing the updated rent, or a 404 Not Found response if the rent is not found.
      */
     @PutMapping("/edit-active/{id}")
-    public ResponseEntity<Rent> editActive(@PathVariable Long id, @RequestParam boolean isActive) {
-        Optional<Rent> rentOpt = rentService.editActive(id, isActive);
-
+    public ResponseEntity<RentDTO> editActive(@PathVariable Long id, @RequestParam boolean isActive) {
+        Optional<RentDTO> rentOpt = rentService.editActive(id, isActive);
         if (rentOpt.isPresent()) {
             return ResponseEntity.ok().body(rentOpt.get());
         }
