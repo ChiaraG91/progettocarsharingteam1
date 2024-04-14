@@ -1,5 +1,6 @@
 package com.team1.progettocarsharingteam1.services;
 
+import com.team1.progettocarsharingteam1.dto.UserCleanDTO;
 import com.team1.progettocarsharingteam1.dto.UserDTO;
 import com.team1.progettocarsharingteam1.dto.VehicleDTO;
 import com.team1.progettocarsharingteam1.entities.Rent;
@@ -19,18 +20,18 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserDTO create(UserDTO userDTO) {
+    public UserCleanDTO create(UserDTO userDTO) {
         User user = new User();
         BeanUtils.copyProperties(userDTO ,user);
         User user1 = userRepository.save(user);
         BeanUtils.copyProperties(user1, userDTO);
-        return userDTO;
+        return cleanDTO(userDTO);
     }
 
 
-    public List<UserDTO> findAll(boolean isActive) {
-        List<UserDTO> userDTOList = new ArrayList<>();
-        UserDTO userDTO = new UserDTO();
+    public List<UserCleanDTO> findAll(boolean isActive) {
+        List<UserCleanDTO> userDTOList = new ArrayList<>();
+        UserCleanDTO userDTO = new UserCleanDTO();
         if(isActive) {
             List<User> userList = userRepository.findAllByIsActiveTrue();
             for (User user : userList) {
@@ -47,18 +48,18 @@ public class UserService {
         return userDTOList;
     }
 
-    public Optional<UserDTO> findById(Long id) {
+    public Optional<UserCleanDTO> findById(Long id) {
         Optional<User> userOptional = userRepository.findByIdAndIsActiveTrue(id);
         if (userOptional.isPresent()) {
             UserDTO userDTO = new UserDTO();
             BeanUtils.copyProperties(userOptional.get(), userDTO);
-            return Optional.of(userDTO);
+            return Optional.of(cleanDTO(userDTO));
         } else {
             return Optional.empty();
         }
     }
 
-    public Optional<UserDTO> edit(Long id, UserDTO user) {
+    public Optional<UserCleanDTO> edit(Long id, UserDTO user) {
         Optional<User> optionalUser = userRepository.findByIdAndIsActiveTrue(id);
         if (optionalUser.isPresent()) {
             UserDTO userDTO = new UserDTO();
@@ -73,20 +74,20 @@ public class UserService {
             optionalUser.get().setVerified(user.isVerified());
             User user1 = userRepository.save(optionalUser.get());
             BeanUtils.copyProperties(user1, userDTO);
-            return Optional.of(userDTO);
+            return Optional.of(cleanDTO(userDTO));
         } else {
             return Optional.empty();
         }
     }
 
-    public Optional<UserDTO> delete(Long id) {
+    public Optional<UserCleanDTO> delete(Long id) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             UserDTO userDTO = new UserDTO();
             optionalUser.get().setActive(false);
             User user = userRepository.save(optionalUser.get());
             BeanUtils.copyProperties(user, userDTO);
-            return Optional.of(userDTO);
+            return Optional.of(cleanDTO(userDTO));
         } else {
             return Optional.empty();
         }
@@ -98,14 +99,14 @@ public class UserService {
      * @param name of the user
      * @return a list of users with the given name
      */
-    public Optional<List<UserDTO>> findByName(String name) {
+    public Optional<List<UserCleanDTO>> findByName(String name) {
         List<User> userList = userRepository.findByNameAndIsActiveTrue(name);
-        List<UserDTO> userDTOList = new ArrayList<>();
+        List<UserCleanDTO> userDTOList = new ArrayList<>();
         if (userList.isEmpty()) {
             return Optional.empty();
         } else {
             for (User user : userList) {
-                UserDTO userDTO = new UserDTO();
+                UserCleanDTO userDTO = new UserCleanDTO();
                 BeanUtils.copyProperties(user, userDTO);
                 userDTOList.add(userDTO);
             }
@@ -119,14 +120,14 @@ public class UserService {
      * @param surname surname of the user
      * @return a list of users with the given surname
      */
-    public Optional<List<UserDTO>> findBySurname(String surname) {
+    public Optional<List<UserCleanDTO>> findBySurname(String surname) {
         List<User> userList = userRepository.findBySurnameAndIsActiveTrue(surname);
-        List<UserDTO> userDTOList = new ArrayList<>();
+        List<UserCleanDTO> userDTOList = new ArrayList<>();
         if (userList.isEmpty()) {
             return Optional.empty();
         } else {
             for (User user : userList) {
-                UserDTO userDTO = new UserDTO();
+                UserCleanDTO userDTO = new UserCleanDTO();
                 BeanUtils.copyProperties(user, userDTO);
                 userDTOList.add(userDTO);
             }
@@ -141,11 +142,11 @@ public class UserService {
      * @param isActive the boolean value to set for the isActive field
      * @return an Optional containing the updated user if it exists, or an empty Optional if the user is not found
      */
-    public Optional<UserDTO> editActive(Long id, boolean isActive) {
+    public Optional<UserCleanDTO> editActive(Long id, boolean isActive) {
         Optional<User> userOpt = userRepository.findById(id);
 
         if (userOpt.isPresent()){
-            UserDTO userDTO = new UserDTO();
+            UserCleanDTO userDTO = new UserCleanDTO();
             userOpt.get().setActive(isActive);
             User userUpdated = userRepository.save(userOpt.get());
             BeanUtils.copyProperties(userUpdated, userDTO);
@@ -154,4 +155,9 @@ public class UserService {
         return Optional.empty();
     }
 
+    public UserCleanDTO cleanDTO(UserDTO userDTO) {
+        UserCleanDTO userCleanDTO = new UserCleanDTO();
+        BeanUtils.copyProperties(userDTO, userCleanDTO);
+        return userCleanDTO;
+    }
 }

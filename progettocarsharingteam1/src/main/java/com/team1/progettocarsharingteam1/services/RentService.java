@@ -1,11 +1,7 @@
 package com.team1.progettocarsharingteam1.services;
 
-import com.team1.progettocarsharingteam1.dto.RentCleanDTO;
-import com.team1.progettocarsharingteam1.dto.RentDTO;
-import com.team1.progettocarsharingteam1.dto.UserDTO;
-import com.team1.progettocarsharingteam1.dto.VehicleDTO;
+import com.team1.progettocarsharingteam1.dto.*;
 import com.team1.progettocarsharingteam1.entities.Rent;
-import com.team1.progettocarsharingteam1.entities.Vehicle;
 import com.team1.progettocarsharingteam1.entities.enums.ChargeEnum;
 import com.team1.progettocarsharingteam1.repositories.RentRepository;
 import com.team1.progettocarsharingteam1.repositories.UserRepository;
@@ -182,13 +178,12 @@ public class RentService {
         rentCleanDTO.setPrice(rentDTO.getPrice());
         rentCleanDTO.setActive(rentDTO.isActive());
 
-        UserDTO userDTO = new UserDTO();
+        UserCleanDTO userDTO = new UserCleanDTO();
         BeanUtils.copyProperties(rentDTO.getUser(), userDTO);
-        rentCleanDTO.setUserDTO(userDTO);
+        rentCleanDTO.setUserCleanDTO(userDTO);
 
         VehicleDTO vehicleDTO = new VehicleDTO();
         BeanUtils.copyProperties(rentDTO.getVehicle(), vehicleDTO);
-        // Copia altri campi di Veicolo se necessario
         rentCleanDTO.setVehicleDTO(vehicleDTO);
 
         return rentCleanDTO;

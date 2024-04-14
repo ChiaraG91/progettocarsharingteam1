@@ -7,7 +7,7 @@ public class RentCleanDTO {
     private LocalDateTime endTime;
     private Double price;
     private boolean isActive;
-    private UserDTO userDTO;
+    private UserCleanDTO userCleanDTO;
     private VehicleDTO vehicleDTO;
 
     public LocalDateTime getStartTme() {
@@ -34,14 +34,6 @@ public class RentCleanDTO {
         this.price = price;
     }
 
-    public UserDTO getUserDTO() {
-        return userDTO;
-    }
-
-    public void setUserDTO(UserDTO userDTO) {
-        this.userDTO = userDTO;
-    }
-
     public VehicleDTO getVehicleDTO() {
         return vehicleDTO;
     }
@@ -56,5 +48,13 @@ public class RentCleanDTO {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public UserCleanDTO getUserCleanDTO() {
+        return userCleanDTO;
+    }
+
+    public void setUserCleanDTO(UserCleanDTO userCleanDTO) {
+        this.userCleanDTO = userCleanDTO;
     }
 }

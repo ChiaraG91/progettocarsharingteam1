@@ -1,5 +1,6 @@
 package com.team1.progettocarsharingteam1.controllers;
 
+import com.team1.progettocarsharingteam1.dto.UserCleanDTO;
 import com.team1.progettocarsharingteam1.dto.UserDTO;
 import com.team1.progettocarsharingteam1.entities.Rent;
 import com.team1.progettocarsharingteam1.entities.Review;
@@ -19,18 +20,18 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity<UserDTO> create(@RequestBody UserDTO user) {
+    public ResponseEntity<UserCleanDTO> create(@RequestBody UserDTO user) {
         return ResponseEntity.ok().body(userService.create(user));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<UserDTO>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
+    public ResponseEntity<List<UserCleanDTO>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
         return ResponseEntity.ok().body(userService.findAll(isActive));
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
-        Optional<UserDTO> optionalUser = userService.findById(id);
+    public ResponseEntity<UserCleanDTO> findById(@PathVariable Long id) {
+        Optional<UserCleanDTO> optionalUser = userService.findById(id);
         if (optionalUser.isPresent()) {
             return ResponseEntity.ok(optionalUser.get());
         } else {
@@ -39,8 +40,8 @@ public class UserController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<UserDTO> edit(@RequestBody UserDTO user, @PathVariable Long id) {
-        Optional<UserDTO> userOptional = userService.edit(id, user);
+    public ResponseEntity<UserCleanDTO> edit(@RequestBody UserDTO user, @PathVariable Long id) {
+        Optional<UserCleanDTO> userOptional = userService.edit(id, user);
         if (userOptional.isPresent()) {
             return ResponseEntity.ok(userOptional.get());
         } else {
@@ -49,8 +50,8 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    ResponseEntity<UserDTO> delete(@PathVariable Long id) {
-        Optional<UserDTO> userOptional = userService.delete(id);
+    ResponseEntity<UserCleanDTO> delete(@PathVariable Long id) {
+        Optional<UserCleanDTO> userOptional = userService.delete(id);
         if (userOptional.isPresent()) {
             return ResponseEntity.ok(userOptional.get());
         } else {
@@ -65,8 +66,8 @@ public class UserController {
      * @return a list of users with the given name
      */
     @GetMapping("/find/name")
-    ResponseEntity<List<UserDTO>> findByName(@RequestParam String name) {
-        Optional<List<UserDTO>> list = userService.findByName(name);
+    ResponseEntity<List<UserCleanDTO>> findByName(@RequestParam String name) {
+        Optional<List<UserCleanDTO>> list = userService.findByName(name);
         if (list.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
@@ -81,8 +82,8 @@ public class UserController {
      * @return a list of users with the given surname
      */
     @GetMapping("/find/surname")
-    ResponseEntity<List<UserDTO>> findBySurname(@RequestParam String surname) {
-        Optional<List<UserDTO>> list = userService.findBySurname(surname);
+    ResponseEntity<List<UserCleanDTO>> findBySurname(@RequestParam String surname) {
+        Optional<List<UserCleanDTO>> list = userService.findBySurname(surname);
         if (list.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
@@ -98,8 +99,8 @@ public class UserController {
      * @return ResponseEntity containing the updated user, or a 404 Not Found response if the user is not found.
      */
     @PutMapping("/edit-active/{id}")
-    public ResponseEntity<UserDTO> editActive(@PathVariable Long id, @RequestParam boolean isActive) {
-        Optional<UserDTO> userOpt = userService.editActive(id, isActive);
+    public ResponseEntity<UserCleanDTO> editActive(@PathVariable Long id, @RequestParam boolean isActive) {
+        Optional<UserCleanDTO> userOpt = userService.editActive(id, isActive);
 
         if (userOpt.isPresent()) {
             return ResponseEntity.ok().body(userOpt.get());
