@@ -2,9 +2,6 @@ package com.team1.progettocarsharingteam1.controllers;
 
 import com.team1.progettocarsharingteam1.dto.UserCleanDTO;
 import com.team1.progettocarsharingteam1.dto.UserDTO;
-import com.team1.progettocarsharingteam1.entities.Rent;
-import com.team1.progettocarsharingteam1.entities.Review;
-import com.team1.progettocarsharingteam1.entities.User;
 import com.team1.progettocarsharingteam1.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -59,12 +56,6 @@ public class UserController {
         }
     }
 
-    /**
-     * find a list of users by name
-     *
-     * @param name of the user
-     * @return a list of users with the given name
-     */
     @GetMapping("/find/name")
     ResponseEntity<List<UserCleanDTO>> findByName(@RequestParam String name) {
         Optional<List<UserCleanDTO>> list = userService.findByName(name);
@@ -75,12 +66,6 @@ public class UserController {
         }
     }
 
-    /**
-     * find a list of users by surname given
-     *
-     * @param surname of the user
-     * @return a list of users with the given surname
-     */
     @GetMapping("/find/surname")
     ResponseEntity<List<UserCleanDTO>> findBySurname(@RequestParam String surname) {
         Optional<List<UserCleanDTO>> list = userService.findBySurname(surname);
@@ -94,7 +79,7 @@ public class UserController {
     /**
      * Endpoint for updating the isActive field of a user
      *
-     * @param id the identifier of the user to be updated
+     * @param id       the identifier of the user to be updated
      * @param isActive the boolean value to set for the isActive field
      * @return ResponseEntity containing the updated user, or a 404 Not Found response if the user is not found.
      */

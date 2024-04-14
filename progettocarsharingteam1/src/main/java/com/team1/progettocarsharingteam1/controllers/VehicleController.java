@@ -1,7 +1,6 @@
 package com.team1.progettocarsharingteam1.controllers;
 
 import com.team1.progettocarsharingteam1.dto.VehicleDTO;
-import com.team1.progettocarsharingteam1.entities.User;
 import com.team1.progettocarsharingteam1.entities.Vehicle;
 import com.team1.progettocarsharingteam1.entities.enums.CityEnum;
 import com.team1.progettocarsharingteam1.entities.enums.TypeVehicleEnum;
@@ -65,12 +64,6 @@ public class VehicleController {
         }
     }
 
-    /**
-     * find a vehicle by brand name
-     *
-     * @param brand of the vehicle to find
-     * @return the list of vehicles with the same brand
-     */
     @GetMapping("/brand")
     public ResponseEntity<List<VehicleDTO>> findByBrand(@RequestParam String brand) {
         Optional<List<VehicleDTO>> vehicleList = vehicleService.findByBrand(brand);
@@ -81,12 +74,6 @@ public class VehicleController {
         }
     }
 
-    /**
-     * find a vehicle by model name
-     *
-     * @param model of the vehicle to find
-     * @return the list of vehicles with the same model
-     */
     @GetMapping("/model")
     public ResponseEntity<List<VehicleDTO>> findByModel(@RequestParam String model) {
         Optional<List<VehicleDTO>> vehicleList = vehicleService.findByModel(model);
@@ -97,11 +84,6 @@ public class VehicleController {
         }
     }
 
-    /**
-     * find a list of only available vehicles
-     *
-     * @return the list of available vehicles
-     */
     @GetMapping("/available")
     public ResponseEntity<List<VehicleDTO>> findByAvailable() {
         Optional<List<VehicleDTO>> vehicleList = vehicleService.findAllAvailable();
@@ -112,12 +94,6 @@ public class VehicleController {
         }
     }
 
-    /**
-     * find a list of vehicles by type of vehicle enum
-     *
-     * @param typeVehicleEnum the type of vehicle to find
-     * @return the list of vehicles with the same type
-     */
     @GetMapping("/type")
     public ResponseEntity<List<VehicleDTO>> findByType(@RequestParam TypeVehicleEnum typeVehicleEnum) {
         Optional<List<VehicleDTO>> vehicleList = vehicleService.findByTypeVehicle(typeVehicleEnum);
@@ -131,7 +107,7 @@ public class VehicleController {
     /**
      * Endpoint for updating the isActive field of a vehicle
      *
-     * @param id the identifier of the vehicle to be updated
+     * @param id       the identifier of the vehicle to be updated
      * @param isActive the boolean value to set for the isActive field
      * @return ResponseEntity containing the updated vehicle, or a 404 Not Found response if the vehicle is not found.
      */
@@ -154,7 +130,7 @@ public class VehicleController {
     @GetMapping("/city")
     public ResponseEntity<List<VehicleDTO>> findAllByCityEnum(@RequestParam CityEnum city) {
         Optional<List<VehicleDTO>> vehicleDTOList = vehicleService.findAllByCityEnum(city);
-        if(vehicleDTOList.isEmpty()) {
+        if (vehicleDTOList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(vehicleDTOList.get());

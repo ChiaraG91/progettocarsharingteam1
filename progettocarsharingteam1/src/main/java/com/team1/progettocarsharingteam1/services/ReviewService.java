@@ -22,7 +22,7 @@ public class ReviewService {
 
     public List<Review> findAll(boolean isActive) {
 
-        if(isActive) {
+        if (isActive) {
             List<Review> reviewList = reviewRepository.findAllByIsActiveTrue();
             return reviewList;
         }
@@ -63,21 +63,10 @@ public class ReviewService {
         }
     }
 
-    /**
-     * find all review by rating enum
-     *
-     * @param ratingEnum the rating enum
-     * @return the list of review found
-     */
     public List<Review> findByRating(RatingEnum ratingEnum) {
         return reviewRepository.findByRatingAndIsActiveTrue(ratingEnum);
     }
 
-    /**
-     * find all review sorted by rating higher to lower
-     *
-     * @return the list of review found
-     */
     public List<Review> sortedRating() {
         return reviewRepository.sortByRating();
     }
@@ -85,14 +74,14 @@ public class ReviewService {
     /**
      * Sets the isActive field of a review to true or false, effectively performing a soft delete
      *
-     * @param id the identifier of the review to be modified.
+     * @param id       the identifier of the review to be modified.
      * @param isActive the boolean value to set for the isActive field
      * @return an Optional containing the updated review if it exists, or an empty Optional if the review is not found
      */
     public Optional<Review> editActive(Long id, boolean isActive) {
         Optional<Review> reviewOpt = reviewRepository.findById(id);
 
-        if (reviewOpt.isPresent()){
+        if (reviewOpt.isPresent()) {
             reviewOpt.get().setActive(isActive);
 
             Review reviewUpdated = reviewRepository.save(reviewOpt.get());

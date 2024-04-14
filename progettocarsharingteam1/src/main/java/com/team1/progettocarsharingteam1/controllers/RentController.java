@@ -2,7 +2,6 @@ package com.team1.progettocarsharingteam1.controllers;
 
 import com.team1.progettocarsharingteam1.dto.RentCleanDTO;
 import com.team1.progettocarsharingteam1.dto.RentDTO;
-import com.team1.progettocarsharingteam1.entities.Rent;
 import com.team1.progettocarsharingteam1.services.RentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +53,12 @@ public class RentController {
 
     }
 
+    /**
+     * endpoint to get all the rents of a user
+     *
+     * @param id the id of the user
+     * @return a list of all the rents of the user or error 404 if the user is not found
+     */
     @GetMapping("/user/{id}")
     ResponseEntity<List<RentCleanDTO>> rentById(@PathVariable Long id) {
         Optional<List<RentCleanDTO>> optionalRents = rentService.rentByid(id);
@@ -64,6 +69,12 @@ public class RentController {
         }
     }
 
+    /**
+     * endpoint to end a rent of a user
+     *
+     * @param id the id of the rent to end
+     * @return the updated rent or error 404 if the rent is not found
+     */
     @PutMapping("/end/{id}")
     public ResponseEntity<RentCleanDTO> endRent(@PathVariable Long id) {
         Optional<RentCleanDTO> endRentOpt = rentService.endRent(id);
@@ -76,7 +87,7 @@ public class RentController {
     /**
      * Endpoint for updating the isActive field of a rent
      *
-     * @param id the identifier of the rent to be updated
+     * @param id       the identifier of the rent to be updated
      * @param isActive the boolean value to set for the isActive field
      * @return ResponseEntity containing the updated rent, or a 404 Not Found response if the rent is not found.
      */

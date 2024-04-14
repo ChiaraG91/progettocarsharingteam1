@@ -2,10 +2,7 @@ package com.team1.progettocarsharingteam1.services;
 
 import com.team1.progettocarsharingteam1.dto.UserCleanDTO;
 import com.team1.progettocarsharingteam1.dto.UserDTO;
-import com.team1.progettocarsharingteam1.dto.VehicleDTO;
-import com.team1.progettocarsharingteam1.entities.Rent;
 import com.team1.progettocarsharingteam1.entities.User;
-import com.team1.progettocarsharingteam1.entities.Vehicle;
 import com.team1.progettocarsharingteam1.repositories.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +19,7 @@ public class UserService {
 
     public UserCleanDTO create(UserDTO userDTO) {
         User user = new User();
-        BeanUtils.copyProperties(userDTO ,user);
+        BeanUtils.copyProperties(userDTO, user);
         User user1 = userRepository.save(user);
         BeanUtils.copyProperties(user1, userDTO);
         return cleanDTO(userDTO);
@@ -32,7 +29,7 @@ public class UserService {
     public List<UserCleanDTO> findAll(boolean isActive) {
         List<UserCleanDTO> userDTOList = new ArrayList<>();
         UserCleanDTO userDTO = new UserCleanDTO();
-        if(isActive) {
+        if (isActive) {
             List<User> userList = userRepository.findAllByIsActiveTrue();
             for (User user : userList) {
                 BeanUtils.copyProperties(user, userDTO);
@@ -93,12 +90,6 @@ public class UserService {
         }
     }
 
-    /**
-     * finds users by name
-     *
-     * @param name of the user
-     * @return a list of users with the given name
-     */
     public Optional<List<UserCleanDTO>> findByName(String name) {
         List<User> userList = userRepository.findByNameAndIsActiveTrue(name);
         List<UserCleanDTO> userDTOList = new ArrayList<>();
@@ -114,12 +105,6 @@ public class UserService {
         }
     }
 
-    /**
-     * finds users by surname
-     *
-     * @param surname surname of the user
-     * @return a list of users with the given surname
-     */
     public Optional<List<UserCleanDTO>> findBySurname(String surname) {
         List<User> userList = userRepository.findBySurnameAndIsActiveTrue(surname);
         List<UserCleanDTO> userDTOList = new ArrayList<>();
@@ -138,14 +123,14 @@ public class UserService {
     /**
      * Sets the isActive field of a user to true or false, effectively performing a soft delete
      *
-     * @param id the identifier of the user to be modified.
+     * @param id       the identifier of the user to be modified.
      * @param isActive the boolean value to set for the isActive field
      * @return an Optional containing the updated user if it exists, or an empty Optional if the user is not found
      */
     public Optional<UserCleanDTO> editActive(Long id, boolean isActive) {
         Optional<User> userOpt = userRepository.findById(id);
 
-        if (userOpt.isPresent()){
+        if (userOpt.isPresent()) {
             UserCleanDTO userDTO = new UserCleanDTO();
             userOpt.get().setActive(isActive);
             User userUpdated = userRepository.save(userOpt.get());

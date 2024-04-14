@@ -1,6 +1,9 @@
 package com.team1.progettocarsharingteam1.services;
 
-import com.team1.progettocarsharingteam1.dto.*;
+import com.team1.progettocarsharingteam1.dto.RentCleanDTO;
+import com.team1.progettocarsharingteam1.dto.RentDTO;
+import com.team1.progettocarsharingteam1.dto.UserCleanDTO;
+import com.team1.progettocarsharingteam1.dto.VehicleDTO;
 import com.team1.progettocarsharingteam1.entities.Rent;
 import com.team1.progettocarsharingteam1.entities.enums.ChargeEnum;
 import com.team1.progettocarsharingteam1.repositories.RentRepository;
@@ -41,7 +44,7 @@ public class RentService {
 
     public List<RentCleanDTO> findAll(boolean isActive) {
         List<RentCleanDTO> rentDTOList = new ArrayList<>();
-        if(isActive) {
+        if (isActive) {
             List<Rent> rentList = rentRepository.findAllByIsActiveTrue();
             for (Rent rent : rentList) {
                 RentDTO rentDTO = new RentDTO();
@@ -73,9 +76,9 @@ public class RentService {
         }
     }
 
-    public Optional<RentCleanDTO> edit(Long id, RentDTO rent){
+    public Optional<RentCleanDTO> edit(Long id, RentDTO rent) {
         Optional<Rent> updatedRent = rentRepository.findByIdAndIsActiveTrue(id);
-        if (updatedRent.isPresent()){
+        if (updatedRent.isPresent()) {
             RentDTO rentDTO = new RentDTO();
             updatedRent.get().setPrice(rent.getPrice());
             updatedRent.get().setStartTme(rent.getStartTme());
@@ -89,20 +92,26 @@ public class RentService {
         }
     }
 
-    public Optional<RentCleanDTO> delete(Long id){
+    public Optional<RentCleanDTO> delete(Long id) {
         Optional<Rent> deletedRentOPT = rentRepository.findById(id);
-        if(deletedRentOPT.isPresent()){
+        if (deletedRentOPT.isPresent()) {
             RentDTO rentDTO = new RentDTO();
             deletedRentOPT.get().setActive(false);
             Rent rent = rentRepository.save(deletedRentOPT.get());
             BeanUtils.copyProperties(rent, rentDTO);
             RentCleanDTO rentCleanDTO = cleanDTO(rentDTO);
             return Optional.of(rentCleanDTO);
-        }else{
+        } else {
             return Optional.empty();
         }
     }
 
+    /**
+     * end a rent of a user using the id of the rent
+     *
+     * @param rentId the id of the rent to end
+     * @return the updated rent or error 404 if it is not found
+     */
     public Optional<RentCleanDTO> endRent(Long rentId) {
         Optional<Rent> rentOptional = rentRepository.findById(rentId);
         if (rentOptional.isPresent() && rentOptional.get().isActive()) {
@@ -138,13 +147,13 @@ public class RentService {
     /**
      * Sets the isActive field of a rent to true or false, effectively performing a soft delete
      *
-     * @param id the identifier of the rent to be modified.
+     * @param id       the identifier of the rent to be modified.
      * @param isActive the boolean value to set for the isActive field
      * @return an Optional containing the updated rent if it exists, or an empty Optional if the rent is not found
      */
     public Optional<RentCleanDTO> editActive(Long id, boolean isActive) {
         Optional<Rent> rentOpt = rentRepository.findById(id);
-        if (rentOpt.isPresent()){
+        if (rentOpt.isPresent()) {
             RentDTO rentDTO = new RentDTO();
             rentOpt.get().setActive(isActive);
             Rent rentUpdated = rentRepository.save(rentOpt.get());

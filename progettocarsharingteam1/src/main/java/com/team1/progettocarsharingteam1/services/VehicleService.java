@@ -21,7 +21,7 @@ public class VehicleService {
 
     public VehicleDTO create(VehicleDTO vehicleDTO) {
         Vehicle vehicle = new Vehicle();
-        BeanUtils.copyProperties(vehicleDTO ,vehicle);
+        BeanUtils.copyProperties(vehicleDTO, vehicle);
         vehicle.setAvailable(true);
         Vehicle vehicle1 = vehicleRepository.save(vehicle);
         BeanUtils.copyProperties(vehicle1, vehicleDTO);
@@ -31,7 +31,7 @@ public class VehicleService {
     public List<VehicleDTO> findAll(boolean isActive) {
         List<VehicleDTO> vehicleDTOList = new ArrayList<>();
         VehicleDTO vehicleDTO = new VehicleDTO();
-        if(isActive) {
+        if (isActive) {
             List<Vehicle> vehicleList = vehicleRepository.findAllByIsActiveTrue();
             for (Vehicle vehicle : vehicleList) {
                 BeanUtils.copyProperties(vehicle, vehicleDTO);
@@ -95,12 +95,6 @@ public class VehicleService {
         }
     }
 
-    /**
-     * find a vehicle by brand name
-     *
-     * @param brand of the vehicle to find
-     * @return the list of vehicles with the same brand
-     */
     public Optional<List<VehicleDTO>> findByBrand(String brand) {
         List<Vehicle> vehicleList = vehicleRepository.findByBrandAndIsActiveTrue(brand);
         List<VehicleDTO> vehicleDTOList = new ArrayList<>();
@@ -116,12 +110,6 @@ public class VehicleService {
         }
     }
 
-    /**
-     * find a vehicle by model name
-     *
-     * @param model of the vehicle to find
-     * @return the list of vehicles with the same model
-     */
     public Optional<List<VehicleDTO>> findByModel(String model) {
         List<Vehicle> vehicleList = vehicleRepository.findByModelAndIsActiveTrue(model);
         List<VehicleDTO> vehicleDTOList = new ArrayList<>();
@@ -137,11 +125,6 @@ public class VehicleService {
         }
     }
 
-    /**
-     * find a list of vehicles available
-     *
-     * @return the list of vehicles
-     */
     public Optional<List<VehicleDTO>> findAllAvailable() {
         List<Vehicle> vehicleList = vehicleRepository.findAllAvailable();
         List<VehicleDTO> vehicleDTOList = new ArrayList<>();
@@ -157,12 +140,6 @@ public class VehicleService {
         }
     }
 
-    /**
-     * find a list of vehicles by type of vehicle enum
-     *
-     * @param typeVehicleEnum the type of vehicle to find
-     * @return the list of vehicles with the same type
-     */
     public Optional<List<VehicleDTO>> findByTypeVehicle(TypeVehicleEnum typeVehicleEnum) {
         List<Vehicle> vehicleList = vehicleRepository.findByTypeVehicleAndIsActiveTrue(typeVehicleEnum);
         List<VehicleDTO> vehicleDTOList = new ArrayList<>();
@@ -182,14 +159,14 @@ public class VehicleService {
     /**
      * Sets the isActive field of a vehicle to true or false, effectively performing a soft delete
      *
-     * @param id the identifier of the vehicle to be modified.
+     * @param id       the identifier of the vehicle to be modified.
      * @param isActive the boolean value to set for the isActive field
      * @return an Optional containing the updated vehicle if it exists, or an empty Optional if the vehicle is not found
      */
     public Optional<Vehicle> editActive(Long id, boolean isActive) {
         Optional<Vehicle> vehicleOpt = vehicleRepository.findById(id);
 
-        if (vehicleOpt.isPresent()){
+        if (vehicleOpt.isPresent()) {
             vehicleOpt.get().setActive(isActive);
 
             Vehicle vehicleUpdated = vehicleRepository.save(vehicleOpt.get());

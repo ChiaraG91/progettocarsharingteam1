@@ -1,6 +1,5 @@
 package com.team1.progettocarsharingteam1.controllers;
 
-import com.team1.progettocarsharingteam1.entities.Rent;
 import com.team1.progettocarsharingteam1.entities.Review;
 import com.team1.progettocarsharingteam1.entities.enums.RatingEnum;
 import com.team1.progettocarsharingteam1.services.ReviewService;
@@ -94,7 +93,7 @@ public class ReviewController {
     /**
      * Endpoint for updating the isActive field of a review
      *
-     * @param id the identifier of the review to be updated
+     * @param id       the identifier of the review to be updated
      * @param isActive the boolean value to set for the isActive field
      * @return ResponseEntity containing the updated review, or a 404 Not Found response if the review is not found.
      */
