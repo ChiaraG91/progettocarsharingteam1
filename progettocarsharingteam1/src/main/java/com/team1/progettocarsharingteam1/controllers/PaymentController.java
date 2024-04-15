@@ -3,6 +3,8 @@ package com.team1.progettocarsharingteam1.controllers;
 import com.stripe.exception.StripeException;
 import com.team1.progettocarsharingteam1.entities.PaymentRequest;
 import com.team1.progettocarsharingteam1.services.PaymentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,12 +18,16 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PaymentController.class);
+
     @PostMapping("/process/payment")
     public String processPayment(@RequestBody PaymentRequest paymentRequest) {
         try {
             paymentService.processPayment(paymentRequest);
+            LOGGER.info("operation completed");
             return "Pagamento elaborato con successo!";
         } catch (StripeException e) {
+            LOGGER.error("An error occurred");
             return "Errore durante l'elaborazione del pagamento: " + e.getMessage();
         }
     }

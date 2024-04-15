@@ -3,6 +3,8 @@ package com.team1.progettocarsharingteam1.controllers;
 import com.team1.progettocarsharingteam1.entities.Review;
 import com.team1.progettocarsharingteam1.entities.enums.RatingEnum;
 import com.team1.progettocarsharingteam1.services.ReviewService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +19,19 @@ public class ReviewController {
     @Autowired
     ReviewService reviewService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReviewController.class);
+
     @PostMapping("/create")
     public ResponseEntity<Review> create(@RequestBody Review review) {
         Review reviewNuova = reviewService.create(review);
+        LOGGER.info("creation done");
         return ResponseEntity.ok().body(reviewNuova);
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<Review>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
         List<Review> reviews = reviewService.findAll(isActive);
+        LOGGER.info("operation completed");
         return ResponseEntity.ok().body(reviews);
     }
 
@@ -33,8 +39,10 @@ public class ReviewController {
     public ResponseEntity<Review> findById(@PathVariable Long id) {
         Optional<Review> reviewOpt = reviewService.findById(id);
         if (reviewOpt.isPresent()) {
+            LOGGER.info("operation completed");
             return ResponseEntity.ok().body(reviewOpt.get());
         } else {
+            LOGGER.info("review not found");
             return ResponseEntity.notFound().build();
         }
     }
@@ -43,8 +51,10 @@ public class ReviewController {
     public ResponseEntity<Review> edit(@PathVariable Long id, @RequestBody Review review) {
         Optional<Review> reviewOpt = reviewService.edit(id, review);
         if (reviewOpt.isPresent()) {
+            LOGGER.info("operation completed");
             return ResponseEntity.ok().body(reviewOpt.get());
         } else {
+            LOGGER.info("review not found");
             return ResponseEntity.notFound().build();
         }
     }
@@ -53,8 +63,10 @@ public class ReviewController {
     public ResponseEntity<Review> delete(@PathVariable Long id) {
         Optional<Review> reviewOpt = reviewService.delete(id);
         if (reviewOpt.isPresent()) {
+            LOGGER.info("operation completed");
             return ResponseEntity.ok().body(reviewOpt.get());
         } else {
+            LOGGER.info("review not found");
             return ResponseEntity.notFound().build();
         }
     }
@@ -69,8 +81,10 @@ public class ReviewController {
     public ResponseEntity<List<Review>> findByRating(@RequestParam RatingEnum ratingEnum) {
         List<Review> reviews = reviewService.findByRating(ratingEnum);
         if (reviews.isEmpty()) {
+            LOGGER.info("review not found");
             return ResponseEntity.notFound().build();
         } else {
+            LOGGER.info("operation completed");
             return ResponseEntity.ok(reviews);
         }
     }
@@ -84,8 +98,10 @@ public class ReviewController {
     public ResponseEntity<List<Review>> sortByRating() {
         List<Review> reviews = reviewService.sortedRating();
         if (reviews.isEmpty()) {
+            LOGGER.info("review not found");
             return ResponseEntity.notFound().build();
         } else {
+            LOGGER.info("operation completed");
             return ResponseEntity.ok(reviews);
         }
     }
@@ -100,11 +116,12 @@ public class ReviewController {
     @PutMapping("/edit-active/{id}")
     public ResponseEntity<Review> editActive(@PathVariable Long id, @RequestParam boolean isActive) {
         Optional<Review> reviewOpt = reviewService.editActive(id, isActive);
-
         if (reviewOpt.isPresent()) {
+            LOGGER.info("operation completed");
             return ResponseEntity.ok().body(reviewOpt.get());
         }
-        return ResponseEntity.notFound().build();
+            LOGGER.info("review not found");
+            return ResponseEntity.notFound().build();
     }
 
 }

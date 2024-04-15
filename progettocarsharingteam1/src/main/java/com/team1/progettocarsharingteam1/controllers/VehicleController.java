@@ -5,6 +5,8 @@ import com.team1.progettocarsharingteam1.entities.Vehicle;
 import com.team1.progettocarsharingteam1.entities.enums.CityEnum;
 import com.team1.progettocarsharingteam1.entities.enums.TypeVehicleEnum;
 import com.team1.progettocarsharingteam1.services.VehicleService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +21,11 @@ public class VehicleController {
     @Autowired
     VehicleService vehicleService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(VehicleController.class);
+
     @PostMapping("/create")
     public ResponseEntity<VehicleDTO> create(@RequestBody VehicleDTO vehicleDTO) {
+        LOGGER.info("creation done");
         return ResponseEntity.ok(vehicleService.create(vehicleDTO));
     }
 
@@ -28,8 +33,10 @@ public class VehicleController {
     public ResponseEntity<List<VehicleDTO>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
         List<VehicleDTO> vehicleList = vehicleService.findAll(isActive);
         if (vehicleList.isEmpty()) {
+            LOGGER.info("vehicle not found");
             return ResponseEntity.notFound().build();
         } else {
+            LOGGER.info("operation completed");
             return ResponseEntity.ok(vehicleList);
         }
     }
@@ -38,6 +45,7 @@ public class VehicleController {
     public ResponseEntity<VehicleDTO> findById(@PathVariable Long id) {
         Optional<VehicleDTO> vehicleOpt = vehicleService.findById(id);
         if (vehicleOpt.isPresent()) {
+            LOGGER.info("vehicle not found");
             return ResponseEntity.ok(vehicleOpt.get());
         } else {
             return ResponseEntity.notFound().build();
@@ -48,8 +56,10 @@ public class VehicleController {
     public ResponseEntity<VehicleDTO> edit(@PathVariable Long id, @RequestBody VehicleDTO vehicle) {
         Optional<VehicleDTO> vehicleOpt = vehicleService.edit(id, vehicle);
         if (vehicleOpt.isPresent()) {
+            LOGGER.info("operation completed");
             return ResponseEntity.ok(vehicleOpt.get());
         } else {
+            LOGGER.info("vehicle not found");
             return ResponseEntity.notFound().build();
         }
     }
@@ -58,8 +68,10 @@ public class VehicleController {
     public ResponseEntity<VehicleDTO> delete(@PathVariable Long id) {
         Optional<VehicleDTO> vehicleOpt = vehicleService.delete(id);
         if (vehicleOpt.isPresent()) {
+            LOGGER.info("operation completed");
             return ResponseEntity.ok(vehicleOpt.get());
         } else {
+            LOGGER.info("vehicle not found");
             return ResponseEntity.notFound().build();
         }
     }
@@ -68,8 +80,10 @@ public class VehicleController {
     public ResponseEntity<List<VehicleDTO>> findByBrand(@RequestParam String brand) {
         Optional<List<VehicleDTO>> vehicleList = vehicleService.findByBrand(brand);
         if (vehicleList.isEmpty()) {
+            LOGGER.info("vehicle not found");
             return ResponseEntity.notFound().build();
         } else {
+            LOGGER.info("operation completed");
             return ResponseEntity.ok(vehicleList.get());
         }
     }
@@ -78,8 +92,10 @@ public class VehicleController {
     public ResponseEntity<List<VehicleDTO>> findByModel(@RequestParam String model) {
         Optional<List<VehicleDTO>> vehicleList = vehicleService.findByModel(model);
         if (vehicleList.isEmpty()) {
+            LOGGER.info("vehicle not found");
             return ResponseEntity.notFound().build();
         } else {
+            LOGGER.info("operation completed");
             return ResponseEntity.ok(vehicleList.get());
         }
     }
@@ -88,8 +104,10 @@ public class VehicleController {
     public ResponseEntity<List<VehicleDTO>> findByAvailable() {
         Optional<List<VehicleDTO>> vehicleList = vehicleService.findAllAvailable();
         if (vehicleList.isEmpty()) {
+            LOGGER.info("vehicle not found");
             return ResponseEntity.notFound().build();
         } else {
+            LOGGER.info("operation completed");
             return ResponseEntity.ok(vehicleList.get());
         }
     }
@@ -98,8 +116,10 @@ public class VehicleController {
     public ResponseEntity<List<VehicleDTO>> findByType(@RequestParam TypeVehicleEnum typeVehicleEnum) {
         Optional<List<VehicleDTO>> vehicleList = vehicleService.findByTypeVehicle(typeVehicleEnum);
         if (vehicleList.isEmpty()) {
+            LOGGER.info("vehicle not found");
             return ResponseEntity.notFound().build();
         } else {
+            LOGGER.info("operation completed");
             return ResponseEntity.ok(vehicleList.get());
         }
     }
@@ -114,11 +134,12 @@ public class VehicleController {
     @PutMapping("/edit-active/{id}")
     public ResponseEntity<Vehicle> editActive(@PathVariable Long id, @RequestParam boolean isActive) {
         Optional<Vehicle> vehicleOpt = vehicleService.editActive(id, isActive);
-
         if (vehicleOpt.isPresent()) {
+            LOGGER.info("operation completed");
             return ResponseEntity.ok().body(vehicleOpt.get());
         }
-        return ResponseEntity.notFound().build();
+            LOGGER.info("vehicle not found");
+            return ResponseEntity.notFound().build();
     }
 
     /**
@@ -131,9 +152,11 @@ public class VehicleController {
     public ResponseEntity<List<VehicleDTO>> findAllByCityEnum(@RequestParam CityEnum city) {
         Optional<List<VehicleDTO>> vehicleDTOList = vehicleService.findAllByCityEnum(city);
         if (vehicleDTOList.isEmpty()) {
+            LOGGER.info("vehicle not found");
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().body(vehicleDTOList.get());
+            LOGGER.info("operation completed");
+            return ResponseEntity.ok().body(vehicleDTOList.get());
     }
 
 }
