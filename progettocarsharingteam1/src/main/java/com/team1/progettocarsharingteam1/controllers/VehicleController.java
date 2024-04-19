@@ -1,7 +1,6 @@
 package com.team1.progettocarsharingteam1.controllers;
 
 import com.team1.progettocarsharingteam1.dto.VehicleDTO;
-import com.team1.progettocarsharingteam1.entities.Vehicle;
 import com.team1.progettocarsharingteam1.entities.enums.CityEnum;
 import com.team1.progettocarsharingteam1.entities.enums.TypeVehicleEnum;
 import com.team1.progettocarsharingteam1.services.VehicleService;
@@ -45,9 +44,9 @@ public class VehicleController {
     public ResponseEntity<VehicleDTO> findById(@PathVariable Long id) {
         Optional<VehicleDTO> vehicleOpt = vehicleService.findById(id);
         if (vehicleOpt.isPresent()) {
-            LOGGER.info("vehicle not found");
             return ResponseEntity.ok(vehicleOpt.get());
         } else {
+            LOGGER.info("vehicle not found");
             return ResponseEntity.notFound().build();
         }
     }
@@ -125,21 +124,37 @@ public class VehicleController {
     }
 
     /**
-     * Endpoint for updating the isActive field of a vehicle
+     * Endpoint for performing a soft delete on a vehicle by setting isActive to false
      *
-     * @param id       the identifier of the vehicle to be updated
-     * @param isActive the boolean value to set for the isActive field
-     * @return ResponseEntity containing the updated vehicle, or a 404 Not Found response if the vehicle is not found.
+     * @param id the identifier of the vehicle to be soft deleted
+     * @return ResponseEntity containing the soft deleted vehicle, or a 404 Not Found response if the vehicle is not found.
      */
-    @PutMapping("/edit-active/{id}")
-    public ResponseEntity<Vehicle> editActive(@PathVariable Long id, @RequestParam boolean isActive) {
-        Optional<Vehicle> vehicleOpt = vehicleService.editActive(id, isActive);
+    @DeleteMapping("/soft-delete/{id}")
+    public ResponseEntity<VehicleDTO> softDelete(@PathVariable Long id) {
+        Optional<VehicleDTO> vehicleOpt = vehicleService.softDelete(id);
         if (vehicleOpt.isPresent()) {
             LOGGER.info("operation completed");
             return ResponseEntity.ok().body(vehicleOpt.get());
         }
-            LOGGER.info("vehicle not found");
-            return ResponseEntity.notFound().build();
+        LOGGER.info("vehicle not found");
+        return ResponseEntity.notFound().build();
+    }
+
+    /**
+     * Endpoint for restoring a soft deleted vehicle by setting isActive to true
+     *
+     * @param id the identifier of the vehicle to be restored
+     * @return ResponseEntity containing the restored vehicle, or a 404 Not Found response if the vehicle is not found.
+     */
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<VehicleDTO> restore(@PathVariable Long id) {
+        Optional<VehicleDTO> vehicleOpt = vehicleService.restore(id);
+        if (vehicleOpt.isPresent()) {
+            LOGGER.info("operation completed");
+            return ResponseEntity.ok().body(vehicleOpt.get());
+        }
+        LOGGER.info("vehicle not found");
+        return ResponseEntity.notFound().build();
     }
 
     /**

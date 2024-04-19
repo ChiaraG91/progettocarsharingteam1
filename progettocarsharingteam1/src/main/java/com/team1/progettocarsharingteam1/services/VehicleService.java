@@ -30,10 +30,10 @@ public class VehicleService {
 
     public List<VehicleDTO> findAll(boolean isActive) {
         List<VehicleDTO> vehicleDTOList = new ArrayList<>();
-        VehicleDTO vehicleDTO = new VehicleDTO();
         if (isActive) {
             List<Vehicle> vehicleList = vehicleRepository.findAllByIsActiveTrue();
             for (Vehicle vehicle : vehicleList) {
+                VehicleDTO vehicleDTO = new VehicleDTO();
                 BeanUtils.copyProperties(vehicle, vehicleDTO);
                 vehicleDTOList.add(vehicleDTO);
             }
@@ -41,6 +41,7 @@ public class VehicleService {
         }
         List<Vehicle> vehicleList = vehicleRepository.findAll();
         for (Vehicle vehicle : vehicleList) {
+            VehicleDTO vehicleDTO = new VehicleDTO();
             BeanUtils.copyProperties(vehicle, vehicleDTO);
             vehicleDTOList.add(vehicleDTO);
         }
@@ -48,7 +49,7 @@ public class VehicleService {
     }
 
     public Optional<VehicleDTO> findById(Long id) {
-        Optional<Vehicle> vehicleOptional = vehicleRepository.findById(id);
+        Optional<Vehicle> vehicleOptional = vehicleRepository.findByIdAndIsActiveTrue(id);
         if (vehicleOptional.isPresent()) {
             VehicleDTO vehicleDTO = new VehicleDTO();
             BeanUtils.copyProperties(vehicleOptional.get(), vehicleDTO);
@@ -84,11 +85,11 @@ public class VehicleService {
 
     public Optional<VehicleDTO> delete(Long id) {
         Optional<Vehicle> vehicleOpt = vehicleRepository.findById(id);
+
         if (vehicleOpt.isPresent()) {
+            vehicleRepository.deleteById(id);
             VehicleDTO vehicleDTO = new VehicleDTO();
-            vehicleOpt.get().setActive(false);
-            Vehicle vehicle = vehicleRepository.save(vehicleOpt.get());
-            BeanUtils.copyProperties(vehicle, vehicleDTO);
+            BeanUtils.copyProperties(vehicleOpt.get(), vehicleDTO);
             return Optional.of(vehicleDTO);
         } else {
             return Optional.empty();
@@ -157,20 +158,42 @@ public class VehicleService {
 
 
     /**
-     * Sets the isActive field of a vehicle to true or false, effectively performing a soft delete
+     * Performing a soft delete on a vehicle by setting isActive to false
      *
-     * @param id       the identifier of the vehicle to be modified.
-     * @param isActive the boolean value to set for the isActive field
-     * @return an Optional containing the updated vehicle if it exists, or an empty Optional if the vehicle is not found
+     * @param id the identifier of the vehicle to be deleted
+     * @return an Optional containing the deleted vehicle if it exists, or an empty Optional if the vehicle is not found
      */
-    public Optional<Vehicle> editActive(Long id, boolean isActive) {
+    public Optional<VehicleDTO> softDelete(Long id) {
+        Optional<Vehicle> vehicleOpt = vehicleRepository.findByIdAndIsActiveTrue(id);
+
+        if (vehicleOpt.isPresent()) {
+            vehicleOpt.get().setActive(false);
+            vehicleOpt.get().setAvailable(false);
+            Vehicle vehicleDeleted = vehicleRepository.save(vehicleOpt.get());
+
+            VehicleDTO vehicleDTO = new VehicleDTO();
+            BeanUtils.copyProperties(vehicleDeleted, vehicleDTO);
+            return Optional.of(vehicleDTO);
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Restoring a soft deleted vehicle by setting isActive to true
+     *
+     * @param id the identifier of the vehicle to be restored
+     * @return an Optional containing the restored vehicle if it exists, or an empty Optional if the vehicle is not found
+     */
+    public Optional<VehicleDTO> restore(Long id) {
         Optional<Vehicle> vehicleOpt = vehicleRepository.findById(id);
 
         if (vehicleOpt.isPresent()) {
-            vehicleOpt.get().setActive(isActive);
+            vehicleOpt.get().setActive(true);
+            Vehicle vehicleRestored = vehicleRepository.save(vehicleOpt.get());
 
-            Vehicle vehicleUpdated = vehicleRepository.save(vehicleOpt.get());
-            return Optional.of(vehicleUpdated);
+            VehicleDTO vehicleDTO = new VehicleDTO();
+            BeanUtils.copyProperties(vehicleRestored, vehicleDTO);
+            return Optional.of(vehicleDTO);
         }
         return Optional.empty();
     }
