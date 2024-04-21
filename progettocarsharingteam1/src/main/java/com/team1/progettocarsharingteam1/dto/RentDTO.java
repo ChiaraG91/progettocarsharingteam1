@@ -1,16 +1,21 @@
 package com.team1.progettocarsharingteam1.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.team1.progettocarsharingteam1.entities.User;
 import com.team1.progettocarsharingteam1.entities.Vehicle;
 
 import java.time.LocalDateTime;
 
 public class RentDTO {
-
+    @JsonIgnore
     private Long id;
+    @JsonIgnore
     private LocalDateTime startTme;
+    @JsonIgnore
     private LocalDateTime endTime;
+    @JsonIgnore
     private Double price;
+    @JsonIgnore
     private boolean isActive;
     private User user;
     private Vehicle vehicle;
