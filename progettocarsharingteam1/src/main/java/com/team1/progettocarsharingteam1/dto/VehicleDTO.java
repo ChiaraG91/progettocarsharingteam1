@@ -1,5 +1,6 @@
 package com.team1.progettocarsharingteam1.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.team1.progettocarsharingteam1.entities.Rent;
 import com.team1.progettocarsharingteam1.entities.enums.CityEnum;
 import com.team1.progettocarsharingteam1.entities.enums.TypeVehicleEnum;

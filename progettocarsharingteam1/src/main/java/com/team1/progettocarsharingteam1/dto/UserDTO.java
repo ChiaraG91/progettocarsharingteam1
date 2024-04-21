@@ -1,9 +1,11 @@
 package com.team1.progettocarsharingteam1.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDate;
 
 public class UserDTO {
-
+    @JsonIgnore
     private Long id;
     private String name;
     private String surname;

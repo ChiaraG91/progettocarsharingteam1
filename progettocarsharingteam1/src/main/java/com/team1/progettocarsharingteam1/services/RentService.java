@@ -182,10 +182,12 @@ public class RentService {
 
     public static RentCleanDTO cleanDTO(RentDTO rentDTO) {
         RentCleanDTO rentCleanDTO = new RentCleanDTO();
-        rentCleanDTO.setStartTme(rentDTO.getStartTme());
-        rentCleanDTO.setEndTime(rentDTO.getEndTime());
-        rentCleanDTO.setPrice(rentDTO.getPrice());
-        rentCleanDTO.setActive(rentDTO.isActive());
+        //rentCleanDTO.setId(rentDTO.getId());
+        //rentCleanDTO.setStartTme(rentDTO.getStartTme());
+        //rentCleanDTO.setEndTime(rentDTO.getEndTime());
+        //rentCleanDTO.setPrice(rentDTO.getPrice());
+        //rentCleanDTO.setActive(rentDTO.isActive());
+        BeanUtils.copyProperties(rentDTO, rentCleanDTO);
 
         UserCleanDTO userDTO = new UserCleanDTO();
         BeanUtils.copyProperties(rentDTO.getUser(), userDTO);

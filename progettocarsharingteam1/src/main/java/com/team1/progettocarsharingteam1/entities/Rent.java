@@ -1,6 +1,5 @@
 package com.team1.progettocarsharingteam1.entities;
 
-import com.team1.progettocarsharingteam1.entities.enums.ChargeEnum;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
