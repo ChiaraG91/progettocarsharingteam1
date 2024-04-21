@@ -51,7 +51,7 @@ public class UserControllerTest {
 
     @Test
     @Order(2)
-    void updateStudentById() throws Exception {
+    void updateUserById() throws Exception {
         Long userId = 22L;
         User updatedUser = new User(22L,"Filippo","Bianchi", LocalDate.parse("1995-05-01"),"gugdurhgugurgurgui@mail.com","fhfjiefirvnr45u6785g9","male","via Roma 1","h56757585",true,new ArrayList<>());
         String userJSON = objectMapper.writeValueAsString(updatedUser);
