@@ -2,6 +2,7 @@
 Progetto Team 1 - One Move
 
  <strong>Obiettivi</strong>
+ 
 L’applicazione ha l’obiettivo di:
 - Dare la possibilità di effettuare il noleggio a tempo della macchina, verificando Data, ora e durata con tariffa oraria e gestirle successivamente. 
 - Verificare i propri noleggi
@@ -9,22 +10,20 @@ L’applicazione ha l’obiettivo di:
 - Pagare il noleggio.
 
 
-<strong>Analisi del sistema</strong>
-
 <strong>Attori coinvolti</strong>
+
 Le classi principali sono: 
 - Utente
 - Veicolo
 - Noleggio
 - Recensione 
 
-<strong>Requisiti funzionali</strong>
+
 Tecnologie utilizzate: Spring Rest, Spring Boot, Java, JPA, SQL, Swagger
 
 
-<strong>Analisi dei requisiti</strong>
-
 <strong>Utente</strong>
+
 Deve avere un costruttore con questi parametri:
 - id 
 - nome
@@ -36,6 +35,7 @@ Deve avere un costruttore con questi parametri:
 - indirizzo
 - numero patente
 - is verificato
+  
 Deve avere i seguenti metodi:
 - add utente
 - vedi utente
@@ -47,6 +47,7 @@ Deve avere i seguenti metodi:
 - cerca cognome
 
 <strong>Veicolo</strong>
+
 Deve avere un costruttore con questi parametri:
 - id 
 - nome 
@@ -56,6 +57,7 @@ Deve avere un costruttore con questi parametri:
 - città
 - tipo veicolo
 - è disponibile
+  
 Deve avere i seguenti metodi:
 - crea 
 - vedi veicolo
@@ -69,6 +71,7 @@ Deve avere i seguenti metodi:
 - cerca per città
 
 <strong>Noleggio</strong>
+
 Deve avere un costruttore con questi parametri:
 - id
 - data ora inizio
@@ -76,6 +79,7 @@ Deve avere un costruttore con questi parametri:
 - prezzo
 - veicolo
 - utente
+  
 Deve avere i seguenti metodi:
 - add
 - remove
@@ -88,12 +92,14 @@ Deve avere i seguenti metodi:
 
 
 <strong>Recensione</strong>
+
 Deve avere un costruttore con questi parametri:
 - id
 - nome
 - descrizione
 - voto 
 - id noleggio
+  
 Deve avere i seguenti metodi:
 - add
 - remove
