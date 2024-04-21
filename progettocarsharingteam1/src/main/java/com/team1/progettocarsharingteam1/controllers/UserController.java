@@ -56,6 +56,8 @@ public class UserController {
         }
     }
 
+
+
     @DeleteMapping("/delete/{id}")
     ResponseEntity<UserCleanDTO> delete(@PathVariable Long id) {
         Optional<UserCleanDTO> userOptional = userService.delete(id);

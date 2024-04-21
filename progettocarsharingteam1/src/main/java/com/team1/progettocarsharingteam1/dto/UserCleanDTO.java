@@ -3,10 +3,20 @@ package com.team1.progettocarsharingteam1.dto;
 import java.time.LocalDate;
 
 public class UserCleanDTO {
+
+    private Long id;
     private String name;
     private String surname;
     private LocalDate dateOfBirth;
     private String sex;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

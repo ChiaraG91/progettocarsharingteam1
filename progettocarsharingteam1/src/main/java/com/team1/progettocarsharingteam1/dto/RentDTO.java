@@ -6,12 +6,23 @@ import com.team1.progettocarsharingteam1.entities.Vehicle;
 import java.time.LocalDateTime;
 
 public class RentDTO {
+
+    private Long id;
     private LocalDateTime startTme;
     private LocalDateTime endTime;
     private Double price;
     private boolean isActive;
     private User user;
     private Vehicle vehicle;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public LocalDateTime getStartTme() {
         return startTme;
     }

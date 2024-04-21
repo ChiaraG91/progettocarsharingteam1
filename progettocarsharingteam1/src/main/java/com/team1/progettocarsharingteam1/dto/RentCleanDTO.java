@@ -3,12 +3,21 @@ package com.team1.progettocarsharingteam1.dto;
 import java.time.LocalDateTime;
 
 public class RentCleanDTO {
+    private Long id;
     private LocalDateTime startTme;
     private LocalDateTime endTime;
     private Double price;
     private boolean isActive;
     private UserCleanDTO userCleanDTO;
     private VehicleDTO vehicleDTO;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public LocalDateTime getStartTme() {
         return startTme;

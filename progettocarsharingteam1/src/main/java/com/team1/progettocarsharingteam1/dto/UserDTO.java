@@ -3,6 +3,8 @@ package com.team1.progettocarsharingteam1.dto;
 import java.time.LocalDate;
 
 public class UserDTO {
+
+    private Long id;
     private String name;
     private String surname;
     private LocalDate dateOfBirth;
@@ -12,6 +14,14 @@ public class UserDTO {
     private String address;
     private String licenseNumber;
     private boolean isVerified;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
