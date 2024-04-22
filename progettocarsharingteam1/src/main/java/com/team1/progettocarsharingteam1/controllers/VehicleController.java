@@ -4,6 +4,11 @@ import com.team1.progettocarsharingteam1.dto.VehicleDTO;
 import com.team1.progettocarsharingteam1.entities.enums.CityEnum;
 import com.team1.progettocarsharingteam1.entities.enums.TypeVehicleEnum;
 import com.team1.progettocarsharingteam1.services.VehicleService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jdk.jfr.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@Tag(name = "Vehicle", description = "API related to the vehicle")
 @RestController
 @RequestMapping("/vehicle")
 public class VehicleController {
@@ -129,6 +135,12 @@ public class VehicleController {
      * @param id the identifier of the vehicle to be soft deleted
      * @return ResponseEntity containing the soft deleted vehicle, or a 404 Not Found response if the vehicle is not found.
      */
+    @Operation(summary = "delete the vehicle")
+    @Description("perform a logical delete of a vehicle using the id or return error 404 if the vehicle its not found")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicle found"),
+            @ApiResponse(responseCode = "404", description = "Vehicle not found")
+    })
     @DeleteMapping("/soft-delete/{id}")
     public ResponseEntity<VehicleDTO> softDelete(@PathVariable Long id) {
         Optional<VehicleDTO> vehicleOpt = vehicleService.softDelete(id);
@@ -146,6 +158,12 @@ public class VehicleController {
      * @param id the identifier of the vehicle to be restored
      * @return ResponseEntity containing the restored vehicle, or a 404 Not Found response if the vehicle is not found.
      */
+    @Operation(summary = "restore deleted vehicle")
+    @Description("restore logical delete to get back the vehicle using the id or return error 404 if the vehicle its not found")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicle found"),
+            @ApiResponse(responseCode = "404", description = "Vehicle not found")
+    })
     @PutMapping("/restore/{id}")
     public ResponseEntity<VehicleDTO> restore(@PathVariable Long id) {
         Optional<VehicleDTO> vehicleOpt = vehicleService.restore(id);
@@ -163,6 +181,12 @@ public class VehicleController {
      * @param city the CityEnum value representing the city to search for vehicles
      * @return ResponseEntity containing a List of VehicleDTO, or a 404 Not Found if no vehicles are found
      */
+    @Operation(summary = "find vehicle in the city")
+    @Description("find available vehicle in the chosen city or return error 404 if there are no vehicles")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicles found"),
+            @ApiResponse(responseCode = "404", description = "Vehicles not found")
+    })
     @GetMapping("/city")
     public ResponseEntity<List<VehicleDTO>> findAllByCityEnum(@RequestParam CityEnum city) {
         Optional<List<VehicleDTO>> vehicleDTOList = vehicleService.findAllByCityEnum(city);

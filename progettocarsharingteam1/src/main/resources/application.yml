@@ -14,4 +14,3 @@ spring:
       fail-on-empty-beans: false
 ---
 stripeApiKey: "......"
-
