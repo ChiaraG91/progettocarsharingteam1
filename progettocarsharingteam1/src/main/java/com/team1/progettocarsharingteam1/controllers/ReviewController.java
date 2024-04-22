@@ -27,6 +27,11 @@ public class ReviewController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReviewController.class);
 
+    @Operation(summary = "create a review")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Review successfully created"),
+            @ApiResponse(responseCode = "404", description = "Failed to create the review")
+    })
     @PostMapping("/create")
     public ResponseEntity<Review> create(@RequestBody Review review) {
         Review reviewNuova = reviewService.create(review);
@@ -34,6 +39,11 @@ public class ReviewController {
         return ResponseEntity.ok().body(reviewNuova);
     }
 
+    @Operation(summary = "find all reviews")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Reviews successfully found"),
+            @ApiResponse(responseCode = "404", description = "Reviews not found")
+    })
     @GetMapping("/all")
     public ResponseEntity<List<Review>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
         List<Review> reviews = reviewService.findAll(isActive);
@@ -41,6 +51,11 @@ public class ReviewController {
         return ResponseEntity.ok().body(reviews);
     }
 
+    @Operation(summary = "find a review by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Review successfully found"),
+            @ApiResponse(responseCode = "404", description = "Review not found")
+    })
     @GetMapping("/find/{id}")
     public ResponseEntity<Review> findById(@PathVariable Long id) {
         Optional<Review> reviewOpt = reviewService.findById(id);
@@ -53,6 +68,11 @@ public class ReviewController {
         }
     }
 
+    @Operation(summary = "update a review")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Review successfully updated"),
+            @ApiResponse(responseCode = "404", description = "Review not found")
+    })
     @PutMapping("/edit/{id}")
     public ResponseEntity<Review> edit(@PathVariable Long id, @RequestBody Review review) {
         Optional<Review> reviewOpt = reviewService.edit(id, review);
@@ -65,6 +85,11 @@ public class ReviewController {
         }
     }
 
+    @Operation(summary = "delete a review")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Review successfully deleted"),
+            @ApiResponse(responseCode = "404", description = "Review not found")
+    })
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Review> delete(@PathVariable Long id) {
         Optional<Review> reviewOpt = reviewService.delete(id);

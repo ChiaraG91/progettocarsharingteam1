@@ -27,12 +27,22 @@ public class RentController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RentController.class);
 
+    @Operation(summary = "create a rent")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Rent successfully created"),
+            @ApiResponse(responseCode = "404", description = "Failed to create a rent")
+    })
     @PostMapping("/create")
     public ResponseEntity<RentCleanDTO> create(@RequestBody RentDTO rent) {
         LOGGER.info("creation done");
         return ResponseEntity.ok(rentService.create(rent));
     }
 
+    @Operation(summary = "find all rents")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Rents successfully found"),
+            @ApiResponse(responseCode = "404", description = "Rents not found")
+    })
     @GetMapping("/all")
     public ResponseEntity<List<RentCleanDTO>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
         List<RentCleanDTO> allRentals = rentService.findAll(isActive);
@@ -40,6 +50,11 @@ public class RentController {
         return ResponseEntity.ok().body(allRentals);
     }
 
+    @Operation(summary = "find a rent by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Rent successfully found"),
+            @ApiResponse(responseCode = "404", description = "Rent not found")
+    })
     @GetMapping("/find/{id}")
     public ResponseEntity<Optional<RentCleanDTO>> findById(@PathVariable Long id) {
         Optional<RentCleanDTO> rentOPT = rentService.findById(id);
@@ -47,6 +62,11 @@ public class RentController {
         return ResponseEntity.ok().body(rentOPT);
     }
 
+    @Operation(summary = "edit rent by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Rents successfully updated"),
+            @ApiResponse(responseCode = "404", description = "Rent not found")
+    })
     @PutMapping("/edit/{id}")
     public ResponseEntity<RentCleanDTO> edit(@PathVariable Long id, @RequestBody RentDTO rent) {
         Optional<RentCleanDTO> updatedRentOPT = rentService.edit(id, rent);
@@ -58,6 +78,11 @@ public class RentController {
         return ResponseEntity.notFound().build();
     }
 
+    @Operation(summary = "delete rent by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Rent successfully deleted"),
+            @ApiResponse(responseCode = "404", description = "Rent not found")
+    })
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Optional<RentCleanDTO>> delete(@RequestParam Long id) {
         Optional<RentCleanDTO> deletedRentOPT = rentService.delete(id);

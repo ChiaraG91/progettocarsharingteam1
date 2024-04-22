@@ -26,18 +26,33 @@ public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
+    @Operation(summary = "create a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User successfully created"),
+            @ApiResponse(responseCode = "404", description = "Failed to create the user")
+    })
     @PostMapping("/create")
     public ResponseEntity<UserCleanDTO> create(@RequestBody UserDTO user) {
         LOGGER.info("creation done");
         return ResponseEntity.ok().body(userService.create(user));
     }
 
+    @Operation(summary = "find all users")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Users successfully found"),
+            @ApiResponse(responseCode = "404", description = "Users not found")
+    })
     @GetMapping("/all")
     public ResponseEntity<List<UserCleanDTO>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
         LOGGER.info("operation completed");
         return ResponseEntity.ok().body(userService.findAll(isActive));
     }
 
+    @Operation(summary = "find a user by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User successfully found"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @GetMapping("/find/{id}")
     public ResponseEntity<UserCleanDTO> findById(@PathVariable Long id) {
         Optional<UserCleanDTO> optionalUser = userService.findById(id);
@@ -50,6 +65,11 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "update a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User successfully updated"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @PutMapping("/edit/{id}")
     public ResponseEntity<UserCleanDTO> edit(@RequestBody UserDTO user, @PathVariable Long id) {
         Optional<UserCleanDTO> userOptional = userService.edit(id, user);
@@ -62,7 +82,11 @@ public class UserController {
         }
     }
 
-
+    @Operation(summary = "delete a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User successfully deleted"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @DeleteMapping("/delete/{id}")
     ResponseEntity<UserCleanDTO> delete(@PathVariable Long id) {
         Optional<UserCleanDTO> userOptional = userService.delete(id);
@@ -74,7 +98,11 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
-
+    @Operation(summary = "find a user by name")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User successfully found"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @GetMapping("/find/name")
     ResponseEntity<List<UserCleanDTO>> findByName(@RequestParam String name) {
         Optional<List<UserCleanDTO>> list = userService.findByName(name);
@@ -87,6 +115,11 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "find a user by surname")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User successfully found"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @GetMapping("/find/surname")
     ResponseEntity<List<UserCleanDTO>> findBySurname(@RequestParam String surname) {
         Optional<List<UserCleanDTO>> list = userService.findBySurname(surname);

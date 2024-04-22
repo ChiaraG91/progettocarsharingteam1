@@ -28,12 +28,22 @@ public class VehicleController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VehicleController.class);
 
+    @Operation(summary = "create a vehicle")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicle successfully created"),
+            @ApiResponse(responseCode = "404", description = "vehicle not found")
+    })
     @PostMapping("/create")
     public ResponseEntity<VehicleDTO> create(@RequestBody VehicleDTO vehicleDTO) {
         LOGGER.info("creation done");
         return ResponseEntity.ok(vehicleService.create(vehicleDTO));
     }
 
+    @Operation(summary = "find all vehicles")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicles successfully found"),
+            @ApiResponse(responseCode = "404", description = "vehicles not found")
+    })
     @GetMapping("/all")
     public ResponseEntity<List<VehicleDTO>> findAll(@RequestParam(required = false, defaultValue = "true") boolean isActive) {
         List<VehicleDTO> vehicleList = vehicleService.findAll(isActive);
@@ -46,6 +56,11 @@ public class VehicleController {
         }
     }
 
+    @Operation(summary = "find a vehicle by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicle successfully found"),
+            @ApiResponse(responseCode = "404", description = "vehicle not found")
+    })
     @GetMapping("/find/{id}")
     public ResponseEntity<VehicleDTO> findById(@PathVariable Long id) {
         Optional<VehicleDTO> vehicleOpt = vehicleService.findById(id);
@@ -57,6 +72,11 @@ public class VehicleController {
         }
     }
 
+    @Operation(summary = "update a vehicle by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicle successfully updated"),
+            @ApiResponse(responseCode = "404", description = "vehicle not found")
+    })
     @PutMapping("/edit/{id}")
     public ResponseEntity<VehicleDTO> edit(@PathVariable Long id, @RequestBody VehicleDTO vehicle) {
         Optional<VehicleDTO> vehicleOpt = vehicleService.edit(id, vehicle);
@@ -69,6 +89,11 @@ public class VehicleController {
         }
     }
 
+    @Operation(summary = "delete a vehicle")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicle successfully deleted"),
+            @ApiResponse(responseCode = "404", description = "vehicle not found")
+    })
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<VehicleDTO> delete(@PathVariable Long id) {
         Optional<VehicleDTO> vehicleOpt = vehicleService.delete(id);
@@ -80,7 +105,11 @@ public class VehicleController {
             return ResponseEntity.notFound().build();
         }
     }
-
+    @Operation(summary = "find vehicles by brand name")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicles successfully found"),
+            @ApiResponse(responseCode = "404", description = "vehicles not found")
+    })
     @GetMapping("/brand")
     public ResponseEntity<List<VehicleDTO>> findByBrand(@RequestParam String brand) {
         Optional<List<VehicleDTO>> vehicleList = vehicleService.findByBrand(brand);
@@ -93,6 +122,11 @@ public class VehicleController {
         }
     }
 
+    @Operation(summary = "find vehicles by model name")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicles successfully found"),
+            @ApiResponse(responseCode = "404", description = "vehicles not found")
+    })
     @GetMapping("/model")
     public ResponseEntity<List<VehicleDTO>> findByModel(@RequestParam String model) {
         Optional<List<VehicleDTO>> vehicleList = vehicleService.findByModel(model);
@@ -104,7 +138,11 @@ public class VehicleController {
             return ResponseEntity.ok(vehicleList.get());
         }
     }
-
+    @Operation(summary = "find all available vehicles")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicles successfully found"),
+            @ApiResponse(responseCode = "404", description = "vehicles not found")
+    })
     @GetMapping("/available")
     public ResponseEntity<List<VehicleDTO>> findByAvailable() {
         Optional<List<VehicleDTO>> vehicleList = vehicleService.findAllAvailable();
@@ -116,7 +154,11 @@ public class VehicleController {
             return ResponseEntity.ok(vehicleList.get());
         }
     }
-
+    @Operation(summary = "find vehicles by type")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicles successfully found"),
+            @ApiResponse(responseCode = "404", description = "vehicles not found")
+    })
     @GetMapping("/type")
     public ResponseEntity<List<VehicleDTO>> findByType(@RequestParam TypeVehicleEnum typeVehicleEnum) {
         Optional<List<VehicleDTO>> vehicleList = vehicleService.findByTypeVehicle(typeVehicleEnum);
